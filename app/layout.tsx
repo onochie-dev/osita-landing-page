@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Inter, Space_Grotesk, IBM_Plex_Sans } from "next/font/google";
 import "./globals.css";
 
 const inter = Inter({
@@ -8,9 +8,21 @@ const inter = Inter({
   subsets: ["latin"],
 });
 
+const spaceGrotesk = Space_Grotesk({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-space-grotesk",
+});
+
+const plexSans = IBM_Plex_Sans({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-plex-sans",
+});
+
 export const metadata: Metadata = {
-  title: "Osita | Carbon Compliance Intelligence",
-  description: "European-grade carbon compliance intelligence for CBAM and EU ETS teams.",
+  title: "OSITA | Climate Compliance for Exporters",
+  description: "Climate compliance platform for exporters in growth markets preparing for CBAM 2026.",
 };
 
 export default function RootLayout({
@@ -19,11 +31,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body
-        className={`${inter.className} bg-white text-[#111] antialiased`}
+        className={`${inter.variable} ${spaceGrotesk.variable} ${plexSans.variable} bg-white antialiased`}
       >
-        {children}
+        <div className="flex min-h-screen flex-col">
+          <main className="flex-1">{children}</main>
+        </div>
       </body>
     </html>
   );
