@@ -1,0 +1,431 @@
+import { useState } from 'react'
+import { useParams, Link, useNavigate } from 'react-router-dom'
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
+import { motion, AnimatePresence } from 'framer-motion'
+import {
+  ArrowLeft,
+  ChevronRight,
+  Check,
+  CheckCircle,
+  Edit3,
+  FileText,
+  Loader2,
+  Eye,
+  Languages,
+  Save,
+  X,
+} from 'lucide-react'
+import toast from 'react-hot-toast'
+import clsx from 'clsx'
+import { documentsApi } from '../api/documents'
+import { extractionsApi } from '../api/extractions'
+import { projectsApi } from '../api/projects'
+import StatusBadge from '../components/StatusBadge'
+import type { ExtractedField, FieldStatus } from '../types'
+
+export default function DocumentReview() {
+  const { projectId, documentId } = useParams<{ projectId: string; documentId: string }>()
+  const navigate = useNavigate()
+  const queryClient = useQueryClient()
+  const [selectedPage, setSelectedPage] = useState(1)
+  const [editingField, setEditingField] = useState<string | null>(null)
+
+  const { data: project } = useQuery({
+    queryKey: ['project', projectId],
+    queryFn: () => projectsApi.get(projectId!),
+    enabled: !!projectId,
+  })
+
+  const { data: document, isLoading: docLoading } = useQuery({
+    queryKey: ['document', documentId],
+    queryFn: () => documentsApi.get(documentId!),
+    enabled: !!documentId,
+  })
+
+  const { data: ocrResult } = useQuery({
+    queryKey: ['ocr', documentId],
+    queryFn: () => documentsApi.getOcr(documentId!),
+    enabled: !!documentId && document?.status !== 'uploaded',
+  })
+
+  const { data: fields, isLoading: fieldsLoading } = useQuery({
+    queryKey: ['fields', documentId],
+    queryFn: () => extractionsApi.getFields(documentId!),
+    enabled: !!documentId,
+  })
+
+  const confirmAllMutation = useMutation({
+    mutationFn: () => extractionsApi.confirmAllFields(documentId!),
+    onSuccess: (result) => {
+      queryClient.invalidateQueries({ queryKey: ['fields', documentId] })
+      toast.success(`Confirmed ${result.confirmed_count} field(s)`)
+    },
+  })
+
+  if (docLoading || fieldsLoading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <Loader2 className="w-8 h-8 animate-spin text-osita-500" />
+      </div>
+    )
+  }
+
+  if (!document) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-screen">
+        <p className="text-gray-400 mb-4">Document not found</p>
+        <Link to={`/project/${projectId}`} className="btn btn-secondary">
+          <ArrowLeft className="w-4 h-4" />
+          Back to Project
+        </Link>
+      </div>
+    )
+  }
+
+  const currentPage = ocrResult?.pages?.find((p) => p.page_number === selectedPage)
+  const unconfirmedCount = fields?.filter((f) => f.status === 'unconfirmed').length || 0
+
+  return (
+    <div className="min-h-screen flex flex-col">
+      {/* Header */}
+      <header className="sticky top-0 z-10 bg-midnight-950/80 backdrop-blur-xl border-b border-white/5">
+        <div className="px-6 py-4">
+          {/* Breadcrumb */}
+          <div className="flex items-center gap-2 text-sm text-gray-500 mb-3">
+            <Link to="/" className="hover:text-white transition-colors">
+              Projects
+            </Link>
+            <ChevronRight className="w-4 h-4" />
+            <Link to={`/project/${projectId}`} className="hover:text-white transition-colors">
+              {project?.name}
+            </Link>
+            <ChevronRight className="w-4 h-4" />
+            <span className="text-white">{document.original_filename}</span>
+          </div>
+
+          {/* Title Row */}
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-4">
+              <button
+                onClick={() => navigate(`/project/${projectId}`)}
+                className="p-2 rounded-lg hover:bg-white/5 text-gray-400 hover:text-white transition-colors"
+              >
+                <ArrowLeft className="w-5 h-5" />
+              </button>
+              
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-lg bg-coral-500/10 flex items-center justify-center">
+                  <FileText className="w-5 h-5 text-coral-400" />
+                </div>
+                <div>
+                  <h1 className="text-xl font-semibold text-white">{document.original_filename}</h1>
+                  <div className="flex items-center gap-4 text-sm text-gray-500 mt-0.5">
+                    {document.page_count && <span>{document.page_count} pages</span>}
+                    <span className="flex items-center gap-1">
+                      <Languages className="w-3.5 h-3.5" />
+                      {document.detected_language?.toUpperCase() || 'Unknown'}
+                    </span>
+                    {document.ocr_confidence && (
+                      <span>OCR: {(document.ocr_confidence * 100).toFixed(0)}%</span>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-3">
+              {unconfirmedCount > 0 && (
+                <span className="text-sm text-gray-400">
+                  {unconfirmedCount} unconfirmed
+                </span>
+              )}
+              <button
+                onClick={() => confirmAllMutation.mutate()}
+                disabled={confirmAllMutation.isPending || unconfirmedCount === 0}
+                className="btn btn-primary"
+              >
+                {confirmAllMutation.isPending ? (
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                ) : (
+                  <CheckCircle className="w-4 h-4" />
+                )}
+                Confirm All
+              </button>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      {/* Main Content */}
+      <div className="flex-1 flex">
+        {/* PDF Viewer / OCR Text */}
+        <div className="w-1/2 border-r border-white/5 flex flex-col">
+          {/* Page Navigation */}
+          {ocrResult && ocrResult.page_count > 1 && (
+            <div className="p-4 border-b border-white/5 flex items-center justify-center gap-2">
+              {Array.from({ length: ocrResult.page_count }, (_, i) => i + 1).map((page) => (
+                <button
+                  key={page}
+                  onClick={() => setSelectedPage(page)}
+                  className={clsx(
+                    'w-8 h-8 rounded-lg text-sm font-medium transition-colors',
+                    selectedPage === page
+                      ? 'bg-osita-500 text-white'
+                      : 'bg-white/5 text-gray-400 hover:bg-white/10'
+                  )}
+                >
+                  {page}
+                </button>
+              ))}
+            </div>
+          )}
+
+          {/* OCR Text Display */}
+          <div className="flex-1 overflow-auto p-6">
+            <div className="mb-4 flex items-center gap-2">
+              <Eye className="w-4 h-4 text-osita-400" />
+              <h3 className="font-medium text-white">OCR Output - Page {selectedPage}</h3>
+            </div>
+            
+            {currentPage ? (
+              <div
+                className={clsx(
+                  'bg-midnight-900 rounded-lg p-6 text-sm leading-relaxed',
+                  document.detected_language === 'ar' && 'text-right'
+                )}
+                dir={document.detected_language === 'ar' ? 'rtl' : 'ltr'}
+              >
+                <pre className="whitespace-pre-wrap font-sans text-gray-300">
+                  {currentPage.markdown}
+                </pre>
+              </div>
+            ) : (
+              <div className="text-center py-12 text-gray-500">
+                <FileText className="w-12 h-12 mx-auto mb-3 opacity-50" />
+                <p>OCR output not available</p>
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Extracted Fields */}
+        <div className="w-1/2 flex flex-col">
+          <div className="p-4 border-b border-white/5">
+            <h3 className="font-medium text-white flex items-center gap-2">
+              <Edit3 className="w-4 h-4 text-osita-400" />
+              Extracted Fields
+            </h3>
+          </div>
+
+          <div className="flex-1 overflow-auto">
+            {fields && fields.length > 0 ? (
+              <table className="w-full">
+                <thead className="sticky top-0 bg-midnight-950">
+                  <tr className="text-left text-xs text-gray-500 uppercase tracking-wide">
+                    <th className="px-4 py-3">Field</th>
+                    <th className="px-4 py-3">Value</th>
+                    <th className="px-4 py-3">Confidence</th>
+                    <th className="px-4 py-3">Status</th>
+                    <th className="px-4 py-3 w-20"></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {fields.map((field) => (
+                    <FieldRow
+                      key={field.id}
+                      field={field}
+                      isEditing={editingField === field.id}
+                      onEdit={() => setEditingField(field.id)}
+                      onCancelEdit={() => setEditingField(null)}
+                      onSaved={() => {
+                        setEditingField(null)
+                        queryClient.invalidateQueries({ queryKey: ['fields', documentId] })
+                      }}
+                    />
+                  ))}
+                </tbody>
+              </table>
+            ) : (
+              <div className="text-center py-12 text-gray-500">
+                <Edit3 className="w-12 h-12 mx-auto mb-3 opacity-50" />
+                <p>No fields extracted</p>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+interface FieldRowProps {
+  field: ExtractedField
+  isEditing: boolean
+  onEdit: () => void
+  onCancelEdit: () => void
+  onSaved: () => void
+}
+
+function FieldRow({ field, isEditing, onEdit, onCancelEdit, onSaved }: FieldRowProps) {
+  const [value, setValue] = useState(field.value || '')
+  const [unit, setUnit] = useState(field.unit || '')
+
+  const updateMutation = useMutation({
+    mutationFn: (data: { value?: string; unit?: string }) =>
+      extractionsApi.updateField(field.id, data),
+    onSuccess: () => {
+      toast.success('Field updated')
+      onSaved()
+    },
+    onError: () => {
+      toast.error('Failed to update field')
+    },
+  })
+
+  const confirmMutation = useMutation({
+    mutationFn: () => extractionsApi.confirmField(field.id),
+    onSuccess: () => {
+      toast.success('Field confirmed')
+      onSaved()
+    },
+  })
+
+  const handleSave = () => {
+    updateMutation.mutate({ value, unit: unit || undefined })
+  }
+
+  const confidenceColor = (conf: number) => {
+    if (conf >= 0.8) return 'text-osita-400'
+    if (conf >= 0.5) return 'text-amber-400'
+    return 'text-coral-400'
+  }
+
+  const statusConfig: Record<FieldStatus, { color: string; bg: string }> = {
+    unconfirmed: { color: 'text-gray-400', bg: 'bg-gray-500/10' },
+    confirmed: { color: 'text-osita-400', bg: 'bg-osita-500/10' },
+    corrected: { color: 'text-amber-400', bg: 'bg-amber-500/10' },
+    manual: { color: 'text-blue-400', bg: 'bg-blue-500/10' },
+  }
+
+  return (
+    <tr className="border-t border-white/5 hover:bg-white/[0.02]">
+      <td className="px-4 py-3">
+        <div>
+          <p className="font-medium text-white capitalize">
+            {field.field_name.replace(/_/g, ' ')}
+          </p>
+          {field.source_page && (
+            <p className="text-xs text-gray-500 mt-0.5">Page {field.source_page}</p>
+          )}
+        </div>
+      </td>
+      
+      <td className="px-4 py-3">
+        {isEditing ? (
+          <div className="flex items-center gap-2">
+            <input
+              type="text"
+              value={value}
+              onChange={(e) => setValue(e.target.value)}
+              className="flex-1 text-sm py-1.5"
+              autoFocus
+            />
+            {field.unit !== undefined && (
+              <input
+                type="text"
+                value={unit}
+                onChange={(e) => setUnit(e.target.value)}
+                placeholder="unit"
+                className="w-20 text-sm py-1.5"
+              />
+            )}
+          </div>
+        ) : (
+          <div className="flex items-center gap-2">
+            <span className="text-white">{field.value || '-'}</span>
+            {field.unit && (
+              <span className="text-xs text-gray-500 px-1.5 py-0.5 bg-white/5 rounded">
+                {field.unit}
+              </span>
+            )}
+          </div>
+        )}
+        
+        {field.source_quote && !isEditing && (
+          <p className="text-xs text-gray-600 mt-1 truncate max-w-[200px]" title={field.source_quote}>
+            "{field.source_quote}"
+          </p>
+        )}
+      </td>
+      
+      <td className="px-4 py-3">
+        {field.confidence !== undefined && (
+          <span className={clsx('font-mono text-sm', confidenceColor(field.confidence))}>
+            {(field.confidence * 100).toFixed(0)}%
+          </span>
+        )}
+      </td>
+      
+      <td className="px-4 py-3">
+        <span
+          className={clsx(
+            'px-2 py-1 text-xs font-medium rounded-full capitalize',
+            statusConfig[field.status].color,
+            statusConfig[field.status].bg
+          )}
+        >
+          {field.status}
+        </span>
+      </td>
+      
+      <td className="px-4 py-3">
+        {isEditing ? (
+          <div className="flex items-center gap-1">
+            <button
+              onClick={handleSave}
+              disabled={updateMutation.isPending}
+              className="p-1.5 rounded hover:bg-osita-500/20 text-osita-400"
+            >
+              {updateMutation.isPending ? (
+                <Loader2 className="w-4 h-4 animate-spin" />
+              ) : (
+                <Save className="w-4 h-4" />
+              )}
+            </button>
+            <button
+              onClick={onCancelEdit}
+              className="p-1.5 rounded hover:bg-white/10 text-gray-400"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          </div>
+        ) : (
+          <div className="flex items-center gap-1">
+            <button
+              onClick={onEdit}
+              className="p-1.5 rounded hover:bg-white/10 text-gray-400 hover:text-white"
+              title="Edit"
+            >
+              <Edit3 className="w-4 h-4" />
+            </button>
+            {field.status === 'unconfirmed' && (
+              <button
+                onClick={() => confirmMutation.mutate()}
+                disabled={confirmMutation.isPending}
+                className="p-1.5 rounded hover:bg-osita-500/20 text-gray-400 hover:text-osita-400"
+                title="Confirm"
+              >
+                {confirmMutation.isPending ? (
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                ) : (
+                  <Check className="w-4 h-4" />
+                )}
+              </button>
+            )}
+          </div>
+        )}
+      </td>
+    </tr>
+  )
+}
+

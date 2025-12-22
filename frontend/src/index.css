@@ -1,0 +1,150 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --color-bg: #0f1629;
+  --color-surface: #1a2235;
+  --color-border: rgba(255, 255, 255, 0.08);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Outfit', system-ui, sans-serif;
+  background: var(--color-bg);
+  color: #e2e8f0;
+  min-height: 100vh;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-bg);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* Glass effect */
+.glass {
+  background: rgba(26, 34, 53, 0.8);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--color-border);
+}
+
+/* Glow effects */
+.glow-green {
+  box-shadow: 0 0 30px rgba(20, 184, 144, 0.15);
+}
+
+.glow-coral {
+  box-shadow: 0 0 30px rgba(244, 63, 94, 0.15);
+}
+
+/* PDF viewer container */
+.pdf-container {
+  background: #1a1a1a;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+/* RTL support for Arabic */
+[dir="rtl"] {
+  text-align: right;
+}
+
+/* Animation delays */
+.delay-100 { animation-delay: 100ms; }
+.delay-200 { animation-delay: 200ms; }
+.delay-300 { animation-delay: 300ms; }
+.delay-400 { animation-delay: 400ms; }
+.delay-500 { animation-delay: 500ms; }
+
+/* Status badge animations */
+@keyframes statusPulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.status-processing {
+  animation: statusPulse 1.5s ease-in-out infinite;
+}
+
+/* XML code display */
+.xml-display {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+/* Dropzone styling */
+.dropzone-active {
+  border-color: #14b890 !important;
+  background: rgba(20, 184, 144, 0.05) !important;
+}
+
+/* Table styling */
+.data-table {
+  @apply w-full text-sm;
+}
+
+.data-table th {
+  @apply px-4 py-3 text-left font-medium text-gray-400 bg-midnight-900/50;
+}
+
+.data-table td {
+  @apply px-4 py-3 border-t border-white/5;
+}
+
+.data-table tr:hover td {
+  @apply bg-white/[0.02];
+}
+
+/* Input styling */
+input, select, textarea {
+  @apply bg-midnight-900 border border-white/10 rounded-lg px-3 py-2 text-white placeholder-gray-500 focus:outline-none focus:border-osita-500 focus:ring-1 focus:ring-osita-500/50 transition-colors;
+}
+
+/* Button base */
+.btn {
+  @apply inline-flex items-center justify-center gap-2 px-4 py-2 font-medium rounded-lg transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed;
+}
+
+.btn-primary {
+  @apply bg-osita-500 text-white hover:bg-osita-600 active:scale-[0.98];
+}
+
+.btn-secondary {
+  @apply bg-white/5 text-white hover:bg-white/10 border border-white/10;
+}
+
+.btn-danger {
+  @apply bg-coral-500/10 text-coral-400 hover:bg-coral-500/20 border border-coral-500/20;
+}
+
+/* Card */
+.card {
+  @apply bg-midnight-900/50 border border-white/5 rounded-xl;
+}
+
