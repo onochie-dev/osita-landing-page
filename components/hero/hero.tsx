@@ -2,144 +2,162 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { motion, useScroll, useTransform } from "framer-motion";
-import { useRef } from "react";
+import { motion } from "framer-motion";
 
-const heroHighlights = [
-  { label: "ETS certificates monitored", value: "42k+" },
-  { label: "CBAM filings automated", value: "1.3k" },
-  { label: "Policy alerts monthly", value: "22" },
+const complianceFeatures = [
+  "Reg. (EU) 2023/956 Compliant",
+  "Reg. (EU) 2023/2083 Compliant",
+  "Audit-Grade Documentation",
+  "Accredited CBAM Verifiers",
+  "CBAM Registry Filing Automation",
+  "CBAM Liability Management",
 ];
 
 /**
- * Hero renders the hero section with an EU-inspired gradient backdrop and animated overlays
- * that strengthen trust in Osita's institutional positioning.
+ * Hero renders a minimal, high-tech hero section with network globe visualization
  */
 export function Hero() {
-  const sectionRef = useRef<HTMLElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ["start start", "end start"],
-  });
-
-  const overlayOpacity = useTransform(scrollYProgress, [0, 1], [0.15, 0.65]);
-
   return (
-    <motion.section
-      ref={sectionRef}
+    <section
       id="hero"
-      className="relative isolate flex min-h-screen items-center justify-center overflow-hidden bg-hero-gradient pb-24 pt-28 text-neutral-900 dark:text-white"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+      className="relative min-h-screen overflow-hidden bg-neutral-950"
     >
-      <div className="pointer-events-none absolute inset-0 -z-10">
-        <motion.div
-          style={{ opacity: overlayOpacity }}
-          className="absolute inset-0 bg-[url('/globe.svg')] bg-cover bg-center mix-blend-screen dark:mix-blend-lighten"
-          aria-hidden="true"
-        />
-        <motion.div
-          aria-hidden="true"
-          className="absolute -top-32 left-1/2 h-[540px] w-[540px] -translate-x-1/2 rounded-full bg-primary/35 blur-3xl"
-          animate={{ opacity: [0.5, 0.8, 0.5] }}
-          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-        />
-        <Image
-          src="/eu-hero-texture.jpg"
-          alt=""
-          fill
-          priority
-          className="object-cover object-center opacity-30 mix-blend-lighten dark:opacity-20"
-          sizes="(min-width: 1024px) 100vw, 100vw"
-        />
-      </div>
+      {/* Subtle gradient overlay */}
+      <div className="absolute inset-0 bg-gradient-to-br from-neutral-900 via-neutral-950 to-black" />
+      
+      {/* Grid pattern overlay for texture */}
+      <div 
+        className="absolute inset-0 opacity-[0.03]"
+        style={{
+          backgroundImage: `linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px),
+                           linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)`,
+          backgroundSize: '60px 60px'
+        }}
+      />
 
-      <div className="relative mx-auto flex w-full max-w-6xl flex-col items-start gap-10 px-6 md:px-10 lg:px-12">
-        <motion.p
-          className="rounded-full border border-white/20 bg-white/30 px-4 py-1 text-xs font-semibold uppercase tracking-[0.35em] text-white backdrop-blur dark:bg-white/10"
+      <div className="relative mx-auto flex min-h-screen max-w-7xl items-center px-6 py-24 lg:px-12">
+        <div className="grid w-full items-center gap-12 lg:grid-cols-2 lg:gap-8">
+          {/* Left Content */}
+        <motion.div
+            className="z-10 space-y-8"
+            initial={{ opacity: 0, x: -30 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+          >
+            {/* Badge */}
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2, duration: 0.5 }}
-        >
-          Carbon compliance intelligence
-        </motion.p>
+              transition={{ delay: 0.1, duration: 0.5 }}
+            >
+              <span className="inline-flex items-center gap-2 rounded-full border border-neutral-700 bg-neutral-900/80 px-4 py-1.5 text-xs font-medium tracking-wide text-neutral-300 backdrop-blur-sm">
+                <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
+                Global CBAM Compliance Platform
+              </span>
+            </motion.div>
 
-        <div className="grid w-full gap-10 lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)]">
-          <div className="space-y-8">
+            {/* Headline */}
             <motion.h1
-              className="font-display text-4xl leading-tight text-white drop-shadow-lg md:text-5xl lg:text-6xl"
+              className="font-display text-4xl font-semibold leading-[1.1] tracking-tight text-white sm:text-5xl lg:text-6xl"
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3, duration: 0.7 }}
+              transition={{ delay: 0.2, duration: 0.7 }}
             >
-              Elevate CBAM & EU ETS compliance into strategic advantage.
+              The Only AI-Native
+              <br />
+              <span className="text-neutral-400">CBAM Engine</span>
             </motion.h1>
-            <motion.p
-              className="max-w-2xl text-lg text-neutral-100 dark:text-neutral-200"
-              initial={{ opacity: 0, y: 24 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.4, duration: 0.7 }}
-            >
-              Osita unifies customs, emissions, and procurement intelligence so your teams
-              can defend every tonne of CO₂e. Automate filings, surface carbon price
-              exposure, and forecast certificate strategy with a single evidence backbone.
-            </motion.p>
+
+            {/* CTA Button */}
             <motion.div
-              className="flex flex-col items-start gap-4 sm:flex-row"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3, duration: 0.6 }}
+            >
+              <Link
+                href="https://cal.com/osita/demo"
+                className="inline-flex items-center justify-center rounded-full bg-white px-8 py-3.5 text-sm font-semibold text-neutral-900 shadow-lg transition-all hover:bg-neutral-100 hover:shadow-xl focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+              >
+                Let&apos;s Talk
+              </Link>
+            </motion.div>
+
+            {/* Subheadline */}
+          <motion.div
+              className="space-y-2 pt-4"
+              initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.4, duration: 0.6 }}
+            >
+              <p className="text-lg font-medium text-white">
+                End-to-end CBAM compliance automation
+              </p>
+              <p className="text-base text-neutral-400">
+                Across Measurement, Reporting, Verification, Procurement
+              </p>
+            </motion.div>
+
+            {/* Feature Grid */}
+            <motion.div
+              className="grid grid-cols-2 gap-x-8 gap-y-3 pt-6 sm:grid-cols-3"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.5, duration: 0.6 }}
             >
-              <Link
-                id="demo"
-                href="https://cal.com/osita/demo"
-                className="inline-flex items-center justify-center rounded-full bg-white px-7 py-3 text-sm font-semibold text-primary shadow-card-sm transition hover:shadow-card-hover focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
-              >
-                Request Demo
-              </Link>
-              <Link
-                href="#features"
-                className="inline-flex items-center justify-center rounded-full border border-white/70 bg-white/10 px-7 py-3 text-sm font-semibold text-white transition hover:bg-white/20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
-              >
-                Learn More
-              </Link>
-            </motion.div>
-          </div>
-
-          <motion.div
-            className="space-y-6 rounded-3xl border border-white/20 bg-white/10 p-6 shadow-card-sm backdrop-blur dark:bg-white/5"
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.6, duration: 0.6 }}
-          >
-            <h2 className="font-display text-sm uppercase tracking-[0.25em] text-white/80">
-              Assurance dashboard
-            </h2>
-            <p className="text-sm text-white/85">
-              Automated evidence packages, price signals, and EU policy monitoring built
-              for compliance leads and CFOs.
-            </p>
-            <div className="grid gap-4 sm:grid-cols-3">
-              {heroHighlights.map((highlight) => (
+              {complianceFeatures.map((feature, index) => (
                 <motion.div
-                  key={highlight.label}
-                  initial={{ opacity: 0, y: 18 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.7, duration: 0.5 }}
-                  className="rounded-2xl border border-white/20 bg-white/15 p-4 text-left shadow-sm backdrop-blur"
+                  key={feature}
+                  className="flex items-center gap-2"
+                  initial={{ opacity: 0, x: -10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.6 + index * 0.05, duration: 0.4 }}
                 >
-                  <p className="text-2xl font-semibold text-white">{highlight.value}</p>
-                  <p className="text-xs uppercase tracking-[0.2em] text-white/70">
-                    {highlight.label}
-                  </p>
+                  <svg
+                    className="h-4 w-4 flex-shrink-0 text-emerald-500"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                  <span className="text-sm text-neutral-900">{feature}</span>
                 </motion.div>
               ))}
+            </motion.div>
+          </motion.div>
+
+          {/* Right Image */}
+          <motion.div
+            className="relative flex items-center justify-center lg:justify-end"
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.3, duration: 1, ease: [0.22, 1, 0.36, 1] }}
+          >
+            {/* Glow effect behind image */}
+            <div className="absolute h-[500px] w-[500px] rounded-full bg-neutral-800/30 blur-3xl lg:h-[600px] lg:w-[600px]" />
+            
+            {/* Image container with filters */}
+            <div className="relative h-[400px] w-[400px] sm:h-[500px] sm:w-[500px] lg:h-[580px] lg:w-[580px]">
+              <Image
+                src="/network-globe.png"
+                alt="Global compliance network visualization"
+                fill
+                priority
+                className="object-contain grayscale brightness-90 contrast-110 opacity-90"
+                sizes="(max-width: 768px) 400px, (max-width: 1024px) 500px, 580px"
+              />
+              {/* Subtle vignette overlay */}
+              <div className="absolute inset-0 rounded-full bg-gradient-to-r from-neutral-950/40 via-transparent to-neutral-950/40" />
             </div>
           </motion.div>
         </div>
       </div>
-    </motion.section>
+
+      {/* Bottom fade */}
+      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-neutral-950 to-transparent" />
+    </section>
   );
 }
-

@@ -1,20 +1,24 @@
-import { TopRibbon } from "../components/navigation/top-ribbon";
-import { CountdownHero } from "../components/hero/countdown-hero";
-import { WhatIsAtStake } from "../components/stake/what-is-at-stake";
-import { HowWeHelp } from "../components/help/how-we-help";
-import { ContactSection } from "../components/contact/contact-section";
-import { MinimalFooter } from "../components/navigation/minimal-footer";
+import { Navigation } from "@/components/navigation/navigation";
+import { SaasHero } from "@/components/hero/saas-hero";
+import { ProcessSection } from "@/components/sections/process-section";
+import { CoverageSection } from "@/components/sections/coverage-section";
 
 export default function Home() {
   return (
-    <>
-      <TopRibbon />
-      <CountdownHero />
-      <WhatIsAtStake />
-      <HowWeHelp />
-      <ContactSection />
-      <MinimalFooter />
-    </>
+    <div className="min-h-screen bg-white">
+      <Navigation />
+      <main>
+        <SaasHero />
+        <ProcessSection />
+        <CoverageSection />
+      </main>
+      <footer className="bg-white border-t border-gray-200 py-6">
+        <div className="max-w-7xl mx-auto px-6 text-center">
+          <p className="text-sm text-gray-500">
+            © {new Date().getFullYear()} OSITA. All rights reserved.
+          </p>
+        </div>
+      </footer>
+    </div>
   );
 }
-
