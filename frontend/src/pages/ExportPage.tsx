@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useParams, Link } from 'react-router-dom'
-import { useQuery, useMutation } from '@tanstack/react-query'
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { motion } from 'framer-motion'
 import {
   ArrowLeft,
@@ -14,6 +14,9 @@ import {
   AlertCircle,
   CheckCircle,
   Clock,
+  XCircle,
+  AlertTriangle,
+  User,
 } from 'lucide-react'
 import toast from 'react-hot-toast'
 import { cn } from '../lib/cn'
@@ -25,9 +28,16 @@ import { Badge } from '../components/ui/Badge'
 
 export default function ExportPage() {
   const { projectId } = useParams<{ projectId: string }>()
+  const queryClient = useQueryClient()
   const [activeTab, setActiveTab] = useState<'excel' | 'xml' | 'zip'>('excel')
   const [xmlContent, setXmlContent] = useState<string>('')
   const [copied, setCopied] = useState(false)
+  const [showSettingsForm, setShowSettingsForm] = useState(false)
+
+  // Form state for declarant info
+  const [declarantName, setDeclarantName] = useState('')
+  const [declarantId, setDeclarantId] = useState('')
+  const [declarantCountry, setDeclarantCountry] = useState('')
 
   const { data: project, isLoading: projectLoading } = useQuery({
     queryKey: ['project', projectId],
@@ -35,7 +45,7 @@ export default function ExportPage() {
     enabled: !!projectId,
   })
 
-  const { data: validationResult } = useQuery({
+  const { data: validationResult, refetch: refetchValidation } = useQuery({
     queryKey: ['validation', projectId],
     queryFn: () => projectsApi.validate(projectId!),
     enabled: !!projectId,
@@ -45,6 +55,19 @@ export default function ExportPage() {
     queryKey: ['exportHistory', projectId],
     queryFn: () => exportsApi.getHistory(projectId!),
     enabled: !!projectId,
+  })
+
+  const updateProjectMutation = useMutation({
+    mutationFn: (data: any) => projectsApi.update(projectId!, data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['project', projectId] })
+      refetchValidation()
+      toast.success('Settings saved!')
+      setShowSettingsForm(false)
+    },
+    onError: () => {
+      toast.error('Failed to save settings')
+    },
   })
 
   const previewXmlMutation = useMutation({
@@ -97,7 +120,28 @@ export default function ExportPage() {
     setTimeout(() => setCopied(false), 2000)
   }
 
+  const handleSaveDeclarant = () => {
+    if (!declarantName || !declarantId) {
+      toast.error('Please fill in required fields')
+      return
+    }
+    updateProjectMutation.mutate({
+      declarant_info: {
+        name: declarantName,
+        identification_number: declarantId,
+        address: declarantCountry ? { country: declarantCountry, city: 'N/A' } : undefined,
+      },
+    })
+  }
+
   const canExport = validationResult?.can_export ?? false
+  const blockingFlags = validationResult?.flags?.filter(f => f.severity === 'blocking') || []
+  const warningFlags = validationResult?.flags?.filter(f => f.severity === 'warning') || []
+
+  // Check if missing declarant is a blocking issue
+  const missingDeclarant = blockingFlags.some(f => 
+    f.message.toLowerCase().includes('declarant') || f.code === 'MISSING_DECLARANT'
+  )
 
   if (projectLoading) {
     return (
@@ -151,8 +195,8 @@ export default function ExportPage() {
           >
             <Card
               className={cn(
-                'mb-8',
-                canExport ? 'border-emerald-200 bg-emerald-50' : 'border-red-200 bg-red-50'
+                'mb-6',
+                canExport ? 'border-emerald-200 bg-emerald-50' : 'border-amber-200 bg-amber-50'
               )}
               padding="md"
             >
@@ -162,28 +206,152 @@ export default function ExportPage() {
                     <CheckCircle className="w-5 h-5 text-emerald-600" />
                   </div>
                 ) : (
-                  <div className="w-10 h-10 rounded-full bg-red-100 flex items-center justify-center">
-                    <AlertCircle className="w-5 h-5 text-red-600" />
+                  <div className="w-10 h-10 rounded-full bg-amber-100 flex items-center justify-center">
+                    <AlertCircle className="w-5 h-5 text-amber-600" />
                   </div>
                 )}
                 <div className="flex-1">
-                  <p className={cn('font-medium', canExport ? 'text-emerald-800' : 'text-red-800')}>
-                    {canExport ? 'Ready for Export' : 'Review Required Before Export'}
+                  <p className={cn('font-medium', canExport ? 'text-emerald-800' : 'text-amber-800')}>
+                    {canExport ? 'Ready for Export' : 'Action Required Before Export'}
                   </p>
                   <p className="text-sm text-slate-600">
                     {validationResult.blocking_count} blocking · {validationResult.warning_count} warnings · {validationResult.info_count} info
                   </p>
                 </div>
-                {!canExport && (
-                  <Link to={`/project/${projectId}`}>
-                    <Button variant="secondary" size="sm">
-                      Review Issues
-                    </Button>
-                  </Link>
-                )}
               </div>
             </Card>
           </motion.div>
+        )}
+
+        {/* Blocking Issues - Show inline with fix options */}
+        {!canExport && blockingFlags.length > 0 && (
+          <Card className="mb-6 border-red-200" padding="md">
+            <CardHeader 
+              title="Issues Blocking Export" 
+              action={
+                <Badge variant="danger" size="sm">
+                  {blockingFlags.length} blocking
+                </Badge>
+              }
+            />
+            <CardContent>
+              <div className="space-y-4">
+                {blockingFlags.map((flag, idx) => (
+                  <div key={idx} className="flex items-start gap-3 p-4 bg-red-50 rounded-xl border border-red-200">
+                    <XCircle className="w-5 h-5 text-red-500 mt-0.5 flex-shrink-0" />
+                    <div className="flex-1">
+                      <p className="font-medium text-red-800">{flag.message}</p>
+                      {flag.suggestion && (
+                        <p className="text-sm text-red-600 mt-1">{flag.suggestion}</p>
+                      )}
+                    </div>
+                  </div>
+                ))}
+
+                {/* Declarant Info Form - Show if that's the blocking issue */}
+                {missingDeclarant && (
+                  <div className="mt-4 p-4 bg-white rounded-xl border border-slate-200">
+                    <div className="flex items-center gap-2 mb-4">
+                      <User className="w-5 h-5 text-slate-600" />
+                      <h4 className="font-medium text-slate-900">Add Declarant Information</h4>
+                    </div>
+                    
+                    {showSettingsForm ? (
+                      <div className="space-y-4">
+                        <div className="grid grid-cols-2 gap-4">
+                          <div>
+                            <label className="block text-sm font-medium text-slate-700 mb-1">
+                              Company/Person Name *
+                            </label>
+                            <input
+                              type="text"
+                              value={declarantName}
+                              onChange={(e) => setDeclarantName(e.target.value)}
+                              placeholder="e.g., ACME Corporation"
+                              className="w-full"
+                            />
+                          </div>
+                          <div>
+                            <label className="block text-sm font-medium text-slate-700 mb-1">
+                              EORI / ID Number *
+                            </label>
+                            <input
+                              type="text"
+                              value={declarantId}
+                              onChange={(e) => setDeclarantId(e.target.value)}
+                              placeholder="e.g., DE123456789012345"
+                              className="w-full font-mono"
+                            />
+                          </div>
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium text-slate-700 mb-1">
+                            Country Code (optional)
+                          </label>
+                          <input
+                            type="text"
+                            value={declarantCountry}
+                            onChange={(e) => setDeclarantCountry(e.target.value.toUpperCase())}
+                            placeholder="e.g., DE, FR, MA"
+                            maxLength={2}
+                            className="w-32 uppercase"
+                          />
+                        </div>
+                        <div className="flex gap-2">
+                          <Button 
+                            onClick={handleSaveDeclarant}
+                            isLoading={updateProjectMutation.isPending}
+                          >
+                            Save & Continue
+                          </Button>
+                          <Button 
+                            variant="secondary"
+                            onClick={() => setShowSettingsForm(false)}
+                          >
+                            Cancel
+                          </Button>
+                        </div>
+                      </div>
+                    ) : (
+                      <Button onClick={() => setShowSettingsForm(true)}>
+                        <User className="w-4 h-4" />
+                        Add Declarant Info
+                      </Button>
+                    )}
+                  </div>
+                )}
+              </div>
+            </CardContent>
+          </Card>
+        )}
+
+        {/* Warning Issues */}
+        {warningFlags.length > 0 && (
+          <Card className="mb-6 border-amber-200" padding="md">
+            <CardHeader 
+              title="Warnings" 
+              action={
+                <Badge variant="warning" size="sm">
+                  {warningFlags.length} warnings
+                </Badge>
+              }
+            />
+            <CardContent>
+              <div className="space-y-3">
+                {warningFlags.map((flag, idx) => (
+                  <div key={idx} className="flex items-start gap-3 p-3 bg-amber-50 rounded-lg border border-amber-200">
+                    <AlertTriangle className="w-4 h-4 text-amber-500 mt-0.5 flex-shrink-0" />
+                    <div>
+                      <p className="text-sm font-medium text-amber-800">{flag.message}</p>
+                      {flag.suggestion && (
+                        <p className="text-xs text-amber-600 mt-1">{flag.suggestion}</p>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
         )}
 
         {/* Export Options */}
@@ -214,35 +382,37 @@ export default function ExportPage() {
               isLoading: downloadZipMutation.isPending,
             },
           ].map(({ id, icon: Icon, title, description, action, isLoading }) => (
-            <motion.div key={id} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+            <motion.div key={id} whileHover={{ scale: canExport ? 1.02 : 1 }} whileTap={{ scale: canExport ? 0.98 : 1 }}>
               <Card
                 className={cn(
-                  'cursor-pointer transition-all h-full',
-                  activeTab === id && 'ring-2 ring-slate-400 border-slate-400',
-                  !canExport && 'opacity-50 cursor-not-allowed'
+                  'transition-all h-full',
+                  canExport ? 'cursor-pointer' : 'opacity-50 cursor-not-allowed',
+                  activeTab === id && canExport && 'ring-2 ring-slate-400 border-slate-400'
                 )}
                 padding="md"
                 onClick={() => {
                   if (canExport) {
                     setActiveTab(id as typeof activeTab)
                     action()
+                  } else {
+                    toast.error('Please resolve blocking issues first')
                   }
                 }}
               >
                 <div className="flex items-start gap-4">
                   <div className={cn(
                     'w-12 h-12 rounded-xl flex items-center justify-center',
-                    activeTab === id ? 'bg-slate-800' : 'bg-slate-100'
+                    activeTab === id && canExport ? 'bg-slate-800' : 'bg-slate-100'
                   )}>
                     {isLoading ? (
                       <Loader2 className={cn(
                         'w-6 h-6 animate-spin',
-                        activeTab === id ? 'text-white' : 'text-slate-500'
+                        activeTab === id && canExport ? 'text-white' : 'text-slate-500'
                       )} />
                     ) : (
                       <Icon className={cn(
                         'w-6 h-6',
-                        activeTab === id ? 'text-white' : 'text-slate-500'
+                        activeTab === id && canExport ? 'text-white' : 'text-slate-500'
                       )} />
                     )}
                   </div>

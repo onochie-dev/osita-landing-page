@@ -2,7 +2,6 @@ import { useState } from 'react'
 import { useParams, useNavigate, Link } from 'react-router-dom'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import {
-  ArrowLeft,
   Upload,
   Loader2,
   CheckCircle,
@@ -11,6 +10,9 @@ import {
   FileCode,
   Send,
   Check,
+  ChevronRight,
+  AlertTriangle,
+  Info,
 } from 'lucide-react'
 import toast from 'react-hot-toast'
 import { projectsApi } from '../api/projects'
@@ -60,6 +62,7 @@ export default function ProjectView() {
       toast.success(`Uploaded ${selectedFiles.length} file(s)`)
       setSelectedFiles([])
       queryClient.invalidateQueries({ queryKey: ['documents', projectId] })
+      queryClient.invalidateQueries({ queryKey: ['validation', projectId] })
     } catch {
       toast.error('Upload failed')
     } finally {
@@ -84,7 +87,6 @@ export default function ProjectView() {
       <div className="flex flex-col items-center justify-center min-h-screen bg-slate-100">
         <p className="text-slate-500 mb-4">Project not found</p>
         <Link to="/" className="btn btn-secondary">
-          <ArrowLeft className="w-4 h-4" />
           Back to Dashboard
         </Link>
       </div>
@@ -94,21 +96,41 @@ export default function ProjectView() {
   const documents = documentsData?.documents || []
   const canonicalData = project.canonical_data
   const canExport = validationResult?.can_export ?? false
+  const blockingFlags = validationResult?.flags?.filter(f => f.severity === 'blocking') || []
+  const warningFlags = validationResult?.flags?.filter(f => f.severity === 'warning') || []
 
-  // Calculate compliance status
+  // Calculate compliance status based on actual data
   const hasDocuments = documents.length > 0
   const extractedDocs = documents.filter(d => d.status === 'extraction_complete' || d.status === 'reviewed')
-  const indirectComplete = hasDocuments && extractedDocs.length === documents.length
-  const directComplete = false // Not implemented for now
-  const verificationComplete = indirectComplete // Simplified
+  const processingDocs = documents.filter(d => d.status === 'ocr_processing' || d.status === 'extraction_processing')
+  
+  // Indirect emissions: complete when all docs are extracted and there's actual data
+  const indirectHasData = hasDocuments && extractedDocs.length > 0
+  const indirectComplete = hasDocuments && extractedDocs.length === documents.length && processingDocs.length === 0
+  const indirectProgress = hasDocuments ? Math.round((extractedDocs.length / documents.length) * 100) : 0
+
+  // For this MVP, we only handle indirect emissions (electricity)
+  // Direct emissions would require different document types
 
   return (
     <div className="min-h-screen bg-slate-100 flex">
       {/* Main Content */}
       <div className="flex-1 p-6 overflow-auto">
+        {/* Breadcrumb Navigation */}
+        <div className="flex items-center gap-2 text-sm text-slate-500 mb-4">
+          <Link to="/" className="hover:text-slate-700 transition-colors">
+            Projects
+          </Link>
+          <ChevronRight className="w-4 h-4" />
+          <span className="text-slate-900 font-medium">{project.name}</span>
+        </div>
+
         {/* Header */}
         <div className="mb-6">
           <h1 className="text-2xl font-semibold text-slate-900">CBAM Compliance Engine</h1>
+          <p className="text-sm text-slate-500 mt-1">
+            {project.reporting_period} {project.reporting_year} · Upload electricity bills to calculate indirect emissions
+          </p>
         </div>
 
         {/* Upload Zone */}
@@ -144,15 +166,17 @@ export default function ProjectView() {
 
         {/* Emissions Status Accordions */}
         <Accordion type="multiple" defaultOpen={['indirect']}>
-          {/* Direct Emissions */}
+          {/* Direct Emissions - Not applicable for this MVP */}
           <AccordionItem value="direct">
             <AccordionTrigger value="direct">
               Direct emissions compliance status
             </AccordionTrigger>
             <AccordionContent value="direct">
               <div className="text-center py-8 text-slate-500">
-                <p className="font-medium">No data available</p>
-                <p className="text-sm mt-1">Upload documents to view compliance details</p>
+                <Info className="w-8 h-8 mx-auto mb-3 text-slate-400" />
+                <p className="font-medium">Not applicable</p>
+                <p className="text-sm mt-1">This system handles indirect emissions (electricity) only.</p>
+                <p className="text-sm mt-1">Direct emissions require separate reporting.</p>
               </div>
             </AccordionContent>
           </AccordionItem>
@@ -239,8 +263,9 @@ export default function ProjectView() {
                 </div>
               ) : (
                 <div className="text-center py-8 text-slate-500">
-                  <p className="font-medium">No data available</p>
-                  <p className="text-sm mt-1">Upload documents to view compliance details</p>
+                  <Upload className="w-8 h-8 mx-auto mb-3 text-slate-400" />
+                  <p className="font-medium">No documents uploaded</p>
+                  <p className="text-sm mt-1">Upload electricity bills to calculate indirect emissions</p>
                 </div>
               )}
             </AccordionContent>
@@ -249,98 +274,129 @@ export default function ProjectView() {
       </div>
 
       {/* Right Rail - Compliance Status & Actions */}
-      <div className="w-80 border-l border-slate-200 bg-white p-6 overflow-auto">
+      <div className="w-96 border-l border-slate-200 bg-white p-6 overflow-auto">
         {/* Compliance Status Card */}
         <Card className="mb-6" padding="md">
           <CardHeader
             title="Compliance Status"
             action={
-              <Badge variant={canExport ? 'success' : 'danger'}>
+              <Badge variant={canExport ? 'success' : (hasDocuments ? 'warning' : 'neutral')} size="sm">
                 {canExport ? (
                   <>
                     <CheckCircle className="w-3.5 h-3.5" />
-                    Compliant
+                    Ready
+                  </>
+                ) : hasDocuments ? (
+                  <>
+                    <AlertTriangle className="w-3.5 h-3.5" />
+                    Review Required
                   </>
                 ) : (
-                  <>
-                    <XCircle className="w-3.5 h-3.5" />
-                    Not Compliant
-                  </>
+                  'Not Started'
                 )}
               </Badge>
             }
           />
           <CardContent>
             <div className="space-y-4">
-              {/* Direct Emissions */}
+              {/* Indirect Emissions - This is what we track */}
               <div>
                 <div className="flex items-center justify-between mb-2">
-                  <span className="text-sm text-slate-600">Direct emissions</span>
-                  <Badge variant={directComplete ? 'success' : 'danger'} size="sm">
-                    {directComplete ? (
+                  <span className="text-sm text-slate-600">Indirect emissions</span>
+                  <Badge 
+                    variant={indirectComplete ? 'success' : (indirectHasData ? 'warning' : 'neutral')} 
+                    size="sm"
+                  >
+                    {indirectComplete ? (
                       <>
                         <CheckCircle className="w-3 h-3" />
-                        Compliant
+                        Complete
                       </>
+                    ) : indirectHasData ? (
+                      'In Progress'
                     ) : (
-                      <>
-                        <XCircle className="w-3 h-3" />
-                        Not compliant
-                      </>
+                      'Not Started'
                     )}
                   </Badge>
                 </div>
                 <Progress 
-                  value={directComplete ? 100 : 75} 
-                  variant={directComplete ? 'success' : 'danger'} 
-                />
-                <p className="text-xs text-slate-500 mt-1">{directComplete ? '100' : '75'}% complete</p>
-              </div>
-
-              {/* Indirect Emissions */}
-              <div>
-                <div className="flex items-center justify-between mb-2">
-                  <span className="text-sm text-slate-600">Indirect emissions</span>
-                  <Badge variant={indirectComplete ? 'success' : 'warning'} size="sm">
-                    {indirectComplete ? (
-                      <>
-                        <CheckCircle className="w-3 h-3" />
-                        Compliant
-                      </>
-                    ) : 'In Progress'}
-                  </Badge>
-                </div>
-                <Progress 
-                  value={indirectComplete ? 100 : (extractedDocs.length / Math.max(documents.length, 1)) * 100} 
+                  value={indirectProgress} 
                   variant={indirectComplete ? 'success' : 'default'} 
                 />
                 <p className="text-xs text-slate-500 mt-1">
-                  {indirectComplete ? '100' : Math.round((extractedDocs.length / Math.max(documents.length, 1)) * 100)}% complete
+                  {hasDocuments 
+                    ? `${extractedDocs.length} of ${documents.length} documents processed`
+                    : 'Upload documents to begin'
+                  }
                 </p>
               </div>
 
-              {/* Annual Verification */}
-              <div>
+              {/* Direct Emissions - Not tracked in this MVP */}
+              <div className="opacity-50">
                 <div className="flex items-center justify-between mb-2">
-                  <span className="text-sm text-slate-600">Annual Verification | Eurocert S.A.</span>
-                  <Badge variant={verificationComplete ? 'success' : 'neutral'} size="sm">
-                    {verificationComplete ? (
-                      <>
-                        <CheckCircle className="w-3 h-3" />
-                        Compliant
-                      </>
-                    ) : 'Pending'}
+                  <span className="text-sm text-slate-600">Direct emissions</span>
+                  <Badge variant="neutral" size="sm">
+                    N/A
                   </Badge>
                 </div>
-                <Progress 
-                  value={verificationComplete ? 100 : 0} 
-                  variant={verificationComplete ? 'success' : 'default'} 
-                />
-                <p className="text-xs text-slate-500 mt-1">{verificationComplete ? '100' : '0'}% complete</p>
+                <Progress value={0} variant="default" />
+                <p className="text-xs text-slate-500 mt-1">Not applicable (electricity only)</p>
               </div>
             </div>
           </CardContent>
         </Card>
+
+        {/* Validation Issues - Show what's blocking export */}
+        {(blockingFlags.length > 0 || warningFlags.length > 0) && (
+          <Card className="mb-6" padding="md">
+            <CardHeader title="Issues to Resolve" />
+            <CardContent>
+              <div className="space-y-3">
+                {/* Blocking Issues */}
+                {blockingFlags.map((flag, idx) => (
+                  <div key={`blocking-${idx}`} className="flex items-start gap-3 p-3 bg-red-50 rounded-lg border border-red-200">
+                    <XCircle className="w-4 h-4 text-red-500 mt-0.5 flex-shrink-0" />
+                    <div>
+                      <p className="text-sm font-medium text-red-800">{flag.message}</p>
+                      {flag.suggestion && (
+                        <p className="text-xs text-red-600 mt-1">{flag.suggestion}</p>
+                      )}
+                    </div>
+                  </div>
+                ))}
+                
+                {/* Warning Issues */}
+                {warningFlags.map((flag, idx) => (
+                  <div key={`warning-${idx}`} className="flex items-start gap-3 p-3 bg-amber-50 rounded-lg border border-amber-200">
+                    <AlertTriangle className="w-4 h-4 text-amber-500 mt-0.5 flex-shrink-0" />
+                    <div>
+                      <p className="text-sm font-medium text-amber-800">{flag.message}</p>
+                      {flag.suggestion && (
+                        <p className="text-xs text-amber-600 mt-1">{flag.suggestion}</p>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        )}
+
+        {/* How to become compliant - show when not ready */}
+        {!canExport && !hasDocuments && (
+          <Card className="mb-6 bg-blue-50 border-blue-200" padding="md">
+            <CardHeader title="How to get compliant" />
+            <CardContent>
+              <ol className="text-sm text-slate-700 space-y-2 list-decimal list-inside">
+                <li>Upload your electricity bills (PDF)</li>
+                <li>Wait for automatic extraction</li>
+                <li>Review and confirm extracted data</li>
+                <li>Add declarant information in Settings</li>
+                <li>Export your report</li>
+              </ol>
+            </CardContent>
+          </Card>
+        )}
 
         {/* Action Buttons */}
         <div className="space-y-3">
@@ -370,6 +426,22 @@ export default function ProjectView() {
             Submit to CBAM Registry
           </Button>
         </div>
+
+        {/* Settings link for declarant info */}
+        {blockingFlags.some(f => f.message.toLowerCase().includes('declarant')) && (
+          <div className="mt-4 p-3 bg-slate-100 rounded-lg">
+            <p className="text-sm text-slate-700">
+              Missing declarant information? 
+              <Link 
+                to={`/project/${projectId}/export`} 
+                className="text-slate-900 font-medium ml-1 underline"
+              >
+                Go to Export page
+              </Link>
+              {' '}and click "Review Issues" to add it.
+            </p>
+          </div>
+        )}
       </div>
     </div>
   )
