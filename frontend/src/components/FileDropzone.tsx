@@ -1,8 +1,8 @@
 import { useCallback } from 'react'
 import { useDropzone } from 'react-dropzone'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Upload, FileText, X } from 'lucide-react'
-import clsx from 'clsx'
+import { FileText, X } from 'lucide-react'
+import { cn } from '../lib/cn'
 
 interface FileDropzoneProps {
   onFilesSelected: (files: File[]) => void
@@ -26,13 +26,19 @@ export default function FileDropzone({
     [onFilesSelected]
   )
 
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+  const { getRootProps, getInputProps, isDragActive, open } = useDropzone({
     onDrop,
     accept: {
       'application/pdf': ['.pdf'],
+      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': ['.xlsx'],
+      'application/vnd.ms-excel': ['.xls'],
+      'text/csv': ['.csv'],
+      'application/msword': ['.doc'],
+      'application/vnd.openxmlformats-officedocument.wordprocessingml.document': ['.docx'],
     },
     maxFiles,
     disabled: isUploading,
+    noClick: true,
   })
 
   const formatFileSize = (bytes: number) => {
@@ -46,53 +52,32 @@ export default function FileDropzone({
       {/* Dropzone */}
       <div
         {...getRootProps()}
-        className={clsx(
-          'relative border-2 border-dashed rounded-xl p-8 text-center cursor-pointer transition-all duration-200',
+        className={cn(
+          'relative border-2 border-dashed rounded-2xl p-4 text-center transition-all duration-200',
           isDragActive
-            ? 'border-osita-500 bg-osita-500/5'
-            : 'border-white/10 hover:border-white/20 hover:bg-white/[0.02]',
+            ? 'border-emerald-500 bg-emerald-50'
+            : 'border-slate-300 hover:border-slate-400 hover:bg-slate-50',
           isUploading && 'opacity-50 cursor-not-allowed'
         )}
       >
         <input {...getInputProps()} />
         
         <motion.div
-          animate={{ scale: isDragActive ? 1.05 : 1 }}
+          animate={{ scale: isDragActive ? 1.02 : 1 }}
           transition={{ duration: 0.2 }}
-          className="flex flex-col items-center gap-4"
         >
-          <div
-            className={clsx(
-              'w-16 h-16 rounded-2xl flex items-center justify-center transition-colors',
-              isDragActive ? 'bg-osita-500/20' : 'bg-white/5'
+          <button
+            type="button"
+            onClick={open}
+            disabled={isUploading}
+            className={cn(
+              'px-6 py-2.5 rounded-xl font-medium transition-all',
+              'bg-slate-800 text-white hover:bg-slate-700',
+              'disabled:opacity-50 disabled:cursor-not-allowed'
             )}
           >
-            <Upload
-              className={clsx(
-                'w-8 h-8 transition-colors',
-                isDragActive ? 'text-osita-400' : 'text-gray-500'
-              )}
-            />
-          </div>
-
-          <div>
-            <p className="text-white font-medium mb-1">
-              {isDragActive
-                ? 'Drop your PDF files here'
-                : 'Drag & drop PDF files here'}
-            </p>
-            <p className="text-sm text-gray-500">
-              or click to browse (max {maxFiles} files)
-            </p>
-          </div>
-
-          <div className="flex items-center gap-4 text-xs text-gray-600">
-            <span className="flex items-center gap-1">
-              <FileText className="w-3.5 h-3.5" />
-              PDF only
-            </span>
-            <span>Max 50MB per file</span>
-          </div>
+            Browse Files
+          </button>
         </motion.div>
       </div>
 
@@ -105,7 +90,7 @@ export default function FileDropzone({
             exit={{ opacity: 0, height: 0 }}
             className="space-y-2"
           >
-            <p className="text-sm text-gray-400">
+            <p className="text-sm text-slate-600">
               {selectedFiles.length} file{selectedFiles.length > 1 ? 's' : ''} selected
             </p>
             
@@ -117,17 +102,17 @@ export default function FileDropzone({
                   animate={{ opacity: 1, x: 0 }}
                   exit={{ opacity: 0, x: 20 }}
                   transition={{ delay: index * 0.05 }}
-                  className="flex items-center justify-between p-3 bg-white/5 rounded-lg border border-white/5"
+                  className="flex items-center justify-between p-3 bg-slate-50 rounded-xl border border-slate-200"
                 >
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-lg bg-coral-500/10 flex items-center justify-center">
-                      <FileText className="w-5 h-5 text-coral-400" />
+                    <div className="w-10 h-10 rounded-lg bg-red-100 flex items-center justify-center">
+                      <FileText className="w-5 h-5 text-red-500" />
                     </div>
                     <div>
-                      <p className="text-sm font-medium text-white truncate max-w-[300px]">
+                      <p className="text-sm font-medium text-slate-900 truncate max-w-[300px]">
                         {file.name}
                       </p>
-                      <p className="text-xs text-gray-500">
+                      <p className="text-xs text-slate-500">
                         {formatFileSize(file.size)}
                       </p>
                     </div>
@@ -139,7 +124,7 @@ export default function FileDropzone({
                       onRemoveFile(index)
                     }}
                     disabled={isUploading}
-                    className="p-1.5 rounded-lg hover:bg-white/10 text-gray-400 hover:text-white transition-colors disabled:opacity-50"
+                    className="p-1.5 rounded-lg hover:bg-slate-200 text-slate-400 hover:text-slate-600 transition-colors disabled:opacity-50"
                   >
                     <X className="w-4 h-4" />
                   </button>
@@ -152,4 +137,3 @@ export default function FileDropzone({
     </div>
   )
 }
-

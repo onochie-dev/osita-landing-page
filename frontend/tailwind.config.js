@@ -7,7 +7,7 @@ export default {
   theme: {
     extend: {
       colors: {
-        // Osita brand palette - deep oceanic with warm accents
+        // Osita brand palette - clean and professional
         osita: {
           50: '#f0fdf9',
           100: '#ccfbeb',
@@ -21,36 +21,26 @@ export default {
           900: '#134d42',
           950: '#042f27',
         },
-        midnight: {
-          50: '#f4f6fb',
-          100: '#e8ecf6',
-          200: '#ccd7eb',
-          300: '#a0b5d9',
-          400: '#6d8ec4',
-          500: '#4a6fae',
-          600: '#385693',
-          700: '#2e4577',
-          800: '#293c64',
-          900: '#273454',
-          950: '#0f1629',
+        // Sidebar dark theme
+        sidebar: {
+          bg: '#1e293b',
+          hover: '#334155',
+          border: '#334155',
         },
-        coral: {
-          400: '#fb7185',
-          500: '#f43f5e',
-          600: '#e11d48',
+        // Extended slate for more options
+        slate: {
+          750: '#293548',
+          850: '#172033',
         },
-        amber: {
-          400: '#fbbf24',
-          500: '#f59e0b',
-        }
       },
       fontFamily: {
-        sans: ['Outfit', 'system-ui', 'sans-serif'],
-        mono: ['JetBrains Mono', 'Menlo', 'monospace'],
+        sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+        mono: ['JetBrains Mono', 'Fira Code', 'Menlo', 'monospace'],
       },
       animation: {
-        'fade-in': 'fadeIn 0.5s ease-out',
-        'slide-up': 'slideUp 0.5s ease-out',
+        'fade-in': 'fadeIn 0.3s ease-out',
+        'slide-up': 'slideUp 0.4s ease-out',
+        'slide-down': 'slideDown 0.4s ease-out',
         'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
       },
       keyframes: {
@@ -59,16 +49,23 @@ export default {
           '100%': { opacity: '1' },
         },
         slideUp: {
-          '0%': { opacity: '0', transform: 'translateY(20px)' },
+          '0%': { opacity: '0', transform: 'translateY(10px)' },
+          '100%': { opacity: '1', transform: 'translateY(0)' },
+        },
+        slideDown: {
+          '0%': { opacity: '0', transform: 'translateY(-10px)' },
           '100%': { opacity: '1', transform: 'translateY(0)' },
         },
       },
-      backgroundImage: {
-        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
-        'grid-pattern': `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60' viewBox='0 0 60 60'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg stroke='%23ffffff' stroke-opacity='0.05'%3E%3Cpath d='M0 0h60v60H0z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
+      boxShadow: {
+        'card': '0 1px 3px 0 rgb(0 0 0 / 0.05), 0 1px 2px -1px rgb(0 0 0 / 0.05)',
+        'card-hover': '0 4px 6px -1px rgb(0 0 0 / 0.07), 0 2px 4px -2px rgb(0 0 0 / 0.05)',
+      },
+      borderRadius: {
+        '2xl': '1rem',
+        '3xl': '1.5rem',
       },
     },
   },
   plugins: [],
 }
-

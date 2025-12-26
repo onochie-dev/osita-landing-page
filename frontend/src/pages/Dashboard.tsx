@@ -45,13 +45,13 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="min-h-full">
+    <div className="min-h-full bg-slate-100">
       {/* Header */}
-      <header className="sticky top-0 z-10 bg-midnight-950/80 backdrop-blur-xl border-b border-white/5">
-        <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+      <header className="bg-white border-b border-slate-200 sticky top-0 z-10">
+        <div className="max-w-6xl mx-auto px-6 py-5 flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-semibold text-white">Projects</h1>
-            <p className="text-sm text-gray-500 mt-1">
+            <h1 className="text-2xl font-semibold text-slate-900">Projects</h1>
+            <p className="text-sm text-slate-500 mt-1">
               Manage your CBAM filing projects
             </p>
           </div>
@@ -67,10 +67,10 @@ export default function Dashboard() {
       </header>
 
       {/* Content */}
-      <div className="max-w-7xl mx-auto px-6 py-8">
+      <div className="max-w-6xl mx-auto px-6 py-8">
         {isLoading ? (
           <div className="flex items-center justify-center py-20">
-            <Loader2 className="w-8 h-8 animate-spin text-osita-500" />
+            <Loader2 className="w-8 h-8 animate-spin text-slate-400" />
           </div>
         ) : projects && projects.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -82,21 +82,21 @@ export default function Dashboard() {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, scale: 0.95 }}
                   transition={{ delay: index * 0.05 }}
-                  className="card p-5 hover:border-white/10 transition-colors group cursor-pointer"
+                  className="bg-white border border-slate-200 rounded-2xl p-5 hover:shadow-card-hover hover:border-slate-300 transition-all cursor-pointer group"
                   onClick={() => navigate(`/project/${project.id}`)}
                 >
                   <div className="flex items-start justify-between mb-4">
-                    <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-osita-500/20 to-osita-600/20 flex items-center justify-center">
-                      <FolderOpen className="w-5 h-5 text-osita-400" />
+                    <div className="w-10 h-10 rounded-xl bg-slate-100 flex items-center justify-center">
+                      <FolderOpen className="w-5 h-5 text-slate-600" />
                     </div>
                     <StatusBadge status={project.status} />
                   </div>
 
-                  <h3 className="text-lg font-medium text-white mb-1 group-hover:text-osita-400 transition-colors">
+                  <h3 className="text-lg font-medium text-slate-900 mb-1 group-hover:text-slate-700 transition-colors">
                     {project.name}
                   </h3>
                   
-                  <div className="flex items-center gap-4 text-sm text-gray-500 mb-4">
+                  <div className="flex items-center gap-4 text-sm text-slate-500 mb-4">
                     {project.reporting_period && (
                       <span className="flex items-center gap-1.5">
                         <Calendar className="w-3.5 h-3.5" />
@@ -109,8 +109,8 @@ export default function Dashboard() {
                     </span>
                   </div>
 
-                  <div className="flex items-center justify-between pt-4 border-t border-white/5">
-                    <span className="text-xs text-gray-600">
+                  <div className="flex items-center justify-between pt-4 border-t border-slate-100">
+                    <span className="text-xs text-slate-400">
                       {new Date(project.created_at).toLocaleDateString()}
                     </span>
                     
@@ -120,11 +120,11 @@ export default function Dashboard() {
                           e.stopPropagation()
                           handleDelete(project.id, project.name)
                         }}
-                        className="p-1.5 rounded-lg hover:bg-coral-500/10 text-gray-400 hover:text-coral-400 transition-colors"
+                        className="p-1.5 rounded-lg hover:bg-red-50 text-slate-400 hover:text-red-500 transition-colors"
                       >
                         <Trash2 className="w-4 h-4" />
                       </button>
-                      <ArrowRight className="w-4 h-4 text-gray-400" />
+                      <ArrowRight className="w-4 h-4 text-slate-400" />
                     </div>
                   </div>
                 </motion.div>
@@ -153,14 +153,14 @@ function EmptyState({ onCreateClick }: { onCreateClick: () => void }) {
       animate={{ opacity: 1, y: 0 }}
       className="text-center py-20"
     >
-      <div className="w-20 h-20 mx-auto mb-6 rounded-2xl bg-gradient-to-br from-osita-500/20 to-osita-600/20 flex items-center justify-center">
-        <Zap className="w-10 h-10 text-osita-500" />
+      <div className="w-20 h-20 mx-auto mb-6 rounded-2xl bg-slate-100 flex items-center justify-center">
+        <Zap className="w-10 h-10 text-slate-400" />
       </div>
       
-      <h2 className="text-xl font-semibold text-white mb-2">
+      <h2 className="text-xl font-semibold text-slate-900 mb-2">
         Welcome to Osita
       </h2>
-      <p className="text-gray-400 max-w-md mx-auto mb-8">
+      <p className="text-slate-500 max-w-md mx-auto mb-8">
         Start by creating your first CBAM filing project. Upload energy bills, 
         review extracted data, and export to Excel or XML.
       </p>
@@ -211,23 +211,23 @@ function CreateProjectModal({ onClose }: { onClose: () => void }) {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm"
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm"
       onClick={onClose}
     >
       <motion.div
         initial={{ scale: 0.95, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         exit={{ scale: 0.95, opacity: 0 }}
-        className="card w-full max-w-lg p-6"
+        className="bg-white rounded-2xl shadow-xl w-full max-w-lg p-6 border border-slate-200"
         onClick={(e) => e.stopPropagation()}
       >
-        <h2 className="text-xl font-semibold text-white mb-6">
+        <h2 className="text-xl font-semibold text-slate-900 mb-6">
           Create New Project
         </h2>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-400 mb-2">
+            <label className="block text-sm font-medium text-slate-700 mb-2">
               Project Name *
             </label>
             <input
@@ -241,7 +241,7 @@ function CreateProjectModal({ onClose }: { onClose: () => void }) {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-400 mb-2">
+            <label className="block text-sm font-medium text-slate-700 mb-2">
               Description
             </label>
             <textarea
@@ -255,7 +255,7 @@ function CreateProjectModal({ onClose }: { onClose: () => void }) {
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-400 mb-2">
+              <label className="block text-sm font-medium text-slate-700 mb-2">
                 Reporting Period
               </label>
               <select
@@ -275,7 +275,7 @@ function CreateProjectModal({ onClose }: { onClose: () => void }) {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-400 mb-2">
+              <label className="block text-sm font-medium text-slate-700 mb-2">
                 Year
               </label>
               <input
@@ -290,7 +290,7 @@ function CreateProjectModal({ onClose }: { onClose: () => void }) {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-400 mb-2">
+            <label className="block text-sm font-medium text-slate-700 mb-2">
               Emission Factor Source
             </label>
             <select
@@ -305,7 +305,7 @@ function CreateProjectModal({ onClose }: { onClose: () => void }) {
 
           {formData.emission_factor_source === 'provided' && (
             <div>
-              <label className="block text-sm font-medium text-gray-400 mb-2">
+              <label className="block text-sm font-medium text-slate-700 mb-2">
                 Emission Factor (tCO₂/MWh)
               </label>
               <input
@@ -318,7 +318,7 @@ function CreateProjectModal({ onClose }: { onClose: () => void }) {
             </div>
           )}
 
-          <div className="flex items-center justify-end gap-3 pt-4 border-t border-white/5">
+          <div className="flex items-center justify-end gap-3 pt-4 border-t border-slate-100">
             <button
               type="button"
               onClick={onClose}
@@ -349,4 +349,3 @@ function CreateProjectModal({ onClose }: { onClose: () => void }) {
     </motion.div>
   )
 }
-

@@ -11,6 +11,7 @@ export interface Project {
   emission_factor_value?: string
   canonical_data?: CanonicalData
   documents: DocumentSummary[]
+  document_count: number
   created_at: string
   updated_at: string
 }
@@ -78,6 +79,12 @@ export interface Document {
   ocr_processing_time?: number
   file_size?: number
   error_message?: string
+  extraction_data?: {
+    period_start?: string
+    period_end?: string
+    total_consumption?: number
+    supplier?: string
+  }
   created_at: string
   updated_at: string
 }
