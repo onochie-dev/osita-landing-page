@@ -18,7 +18,7 @@ export function Navigation() {
       <div className="max-w-7xl mx-auto px-6 py-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-12">
-            <a href="/" className="tracking-tight font-bold text-[20px] text-black hover:text-gray-600 transition-colors">
+            <a href="/" className="tracking-tight font-bold text-[26.4px] text-black hover:text-gray-600 transition-colors">
               OSITA
             </a>
 

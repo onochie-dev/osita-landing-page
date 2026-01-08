@@ -9,8 +9,8 @@ export default function Home() {
       <Navigation />
       <main>
         <SaasHero />
-        <ProcessSection />
         <CoverageSection />
+        <ProcessSection />
       </main>
       <footer className="bg-white border-t border-gray-200 py-6">
         <div className="max-w-7xl mx-auto px-6 text-center">

@@ -21,8 +21,11 @@ const plexSans = IBM_Plex_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "OSITA | Climate Compliance for Exporters",
-  description: "Climate compliance platform for exporters in growth markets preparing for CBAM 2026.",
+  title: "OSITA",
+  description: "Digital infrastructure for industrial decarbonisation & CBAM compliance.",
+  icons: {
+    icon: "/favicon.ico",
+  },
 };
 
 export default function RootLayout({

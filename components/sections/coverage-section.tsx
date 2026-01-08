@@ -13,34 +13,24 @@ import {
 export function CoverageSection() {
   const industries = [
     {
-      name: "Cement",
-      coverage: "Clinker & grinding",
-      details: ["Process emissions", "Fuel emissions", "Electricity"],
-    },
-    {
-      name: "Fertilizers",
-      coverage: "Nitrogen-based",
-      details: ["Ammonia", "Nitric acid", "Urea"],
-    },
-    {
       name: "Steel & Iron",
       coverage: "Full process coverage",
-      details: ["Blast furnace", "Electric arc", "Direct reduction"],
+      details: ["Blast furnace, Electric arc, Direct reduction", "Indirect emissions calculations (electric grid usage)", "Precursor emissions calculations"],
+    },
+    {
+      name: "Cement",
+      coverage: "Clinker & grinding",
+      details: ["Wet process, Dry process, Semi-dry process", "Indirect emissions calculations (electric grid usage)", "Precursor emissions calculations"],
     },
     {
       name: "Aluminum",
       coverage: "Primary & secondary",
-      details: ["Smelting", "Casting", "Recycling"],
+      details: ["Primary smelting, Secondary smelting, Casting", "Indirect emissions calculations (electric grid usage)", "Precursor emissions calculations"],
     },
     {
-      name: "Electricity",
-      coverage: "Generation & import",
-      details: ["Fossil fuel", "Renewable", "Grid mix"],
-    },
-    {
-      name: "Hydrogen",
-      coverage: "All production routes",
-      details: ["Steam reforming", "Electrolysis", "Gasification"],
+      name: "Fertilizers",
+      coverage: "Nitrogen-based",
+      details: ["Ammonia, Nitric acid, Urea", "Indirect emissions calculations (electric grid usage)", "Precursor emissions calculations"],
     },
   ];
 
@@ -58,15 +48,11 @@ export function CoverageSection() {
           <h2 className="text-4xl tracking-tight text-gray-900 mb-4">
             Industry Coverage
           </h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Delivering comprehensive support for our clients across all CBAM-regulated
-            sectors
-          </p>
         </motion.div>
 
         {/* Cards grid */}
         <motion.div 
-          className="grid md:grid-cols-2 lg:grid-cols-3 gap-6"
+          className="grid grid-cols-1 md:grid-cols-2 gap-6"
           initial="hidden"
           whileInView="visible"
           viewport={viewportOnce}
