@@ -24,7 +24,7 @@ export const metadata: Metadata = {
   title: "OSITA",
   description: "Digital infrastructure for industrial decarbonisation & CBAM compliance.",
   icons: {
-    icon: "/favicon.ico",
+    icon: "/icon.svg",
   },
 };
 
