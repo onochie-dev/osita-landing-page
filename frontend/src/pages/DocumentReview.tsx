@@ -286,16 +286,16 @@ function FieldRow({ field, isEditing, onEdit, onCancelEdit, onSaved }: FieldRowP
   }
 
   const confidenceColor = (conf: number) => {
-    if (conf >= 0.8) return 'text-emerald-600'
+    if (conf >= 0.8) return 'text-neutral-600'
     if (conf >= 0.5) return 'text-amber-600'
     return 'text-red-600'
   }
 
   const statusConfig: Record<FieldStatus, { color: string; bg: string }> = {
     unconfirmed: { color: 'text-slate-600', bg: 'bg-slate-100' },
-    confirmed: { color: 'text-emerald-700', bg: 'bg-emerald-50' },
+    confirmed: { color: 'text-neutral-700', bg: 'bg-neutral-50' },
     corrected: { color: 'text-amber-700', bg: 'bg-amber-50' },
-    manual: { color: 'text-blue-700', bg: 'bg-blue-50' },
+    manual: { color: 'text-neutral-700', bg: 'bg-neutral-100' },
   }
 
   return (
@@ -375,7 +375,7 @@ function FieldRow({ field, isEditing, onEdit, onCancelEdit, onSaved }: FieldRowP
             <button
               onClick={handleSave}
               disabled={updateMutation.isPending}
-              className="p-1.5 rounded-lg hover:bg-emerald-100 text-emerald-600"
+              className="p-1.5 rounded-lg hover:bg-neutral-100 text-neutral-600"
             >
               {updateMutation.isPending ? (
                 <Loader2 className="w-4 h-4 animate-spin" />
@@ -403,7 +403,7 @@ function FieldRow({ field, isEditing, onEdit, onCancelEdit, onSaved }: FieldRowP
               <button
                 onClick={() => confirmMutation.mutate()}
                 disabled={confirmMutation.isPending}
-                className="p-1.5 rounded-lg hover:bg-emerald-100 text-slate-400 hover:text-emerald-600"
+                className="p-1.5 rounded-lg hover:bg-neutral-100 text-slate-400 hover:text-neutral-600"
                 title="Confirm"
               >
                 {confirmMutation.isPending ? (

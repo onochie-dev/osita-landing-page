@@ -150,7 +150,7 @@ export default function Settings() {
   if (isLoading) {
     return (
       <div className="p-8 flex items-center justify-center min-h-[60vh]">
-        <Loader2 className="w-8 h-8 animate-spin text-emerald-500" />
+        <Loader2 className="w-8 h-8 animate-spin text-neutral-500" />
       </div>
     )
   }
@@ -188,7 +188,7 @@ export default function Settings() {
                     key={project.id}
                     onClick={() => handleSelectProject(project)}
                     className={`w-full p-4 text-left hover:bg-slate-50 transition-colors flex items-center justify-between ${
-                      selectedProjectId === project.id ? 'bg-emerald-50 border-l-4 border-emerald-500' : ''
+                      selectedProjectId === project.id ? 'bg-neutral-50 border-l-4 border-neutral-500' : ''
                     }`}
                   >
                     <div className="flex-1 min-w-0">
@@ -207,7 +207,7 @@ export default function Settings() {
                       </div>
                     </div>
                     <ChevronRight className={`w-5 h-5 text-slate-400 ${
-                      selectedProjectId === project.id ? 'text-emerald-500' : ''
+                      selectedProjectId === project.id ? 'text-neutral-500' : ''
                     }`} />
                   </button>
                 ))
@@ -241,10 +241,10 @@ export default function Settings() {
                   <motion.div
                     initial={{ opacity: 0, y: -10 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="bg-emerald-50 border border-emerald-200 rounded-xl p-4 flex items-center gap-3"
+                    className="bg-neutral-50 border border-neutral-200 rounded-xl p-4 flex items-center gap-3"
                   >
-                    <Check className="w-5 h-5 text-emerald-600" />
-                    <span className="text-emerald-800 font-medium">Settings saved successfully!</span>
+                    <Check className="w-5 h-5 text-neutral-600" />
+                    <span className="text-neutral-800 font-medium">Settings saved successfully!</span>
                   </motion.div>
                 )}
 
@@ -263,7 +263,7 @@ export default function Settings() {
                         type="text"
                         value={editingProject.name || ''}
                         onChange={(e) => updateField('name', e.target.value)}
-                        className="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors"
+                        className="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-neutral-500 focus:border-neutral-500 transition-colors"
                         placeholder="Enter project name"
                       />
                     </div>
@@ -275,7 +275,7 @@ export default function Settings() {
                         value={editingProject.description || ''}
                         onChange={(e) => updateField('description', e.target.value)}
                         rows={3}
-                        className="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors resize-none"
+                        className="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-neutral-500 focus:border-neutral-500 transition-colors resize-none"
                         placeholder="Optional description"
                       />
                     </div>
@@ -296,7 +296,7 @@ export default function Settings() {
                       <select
                         value={editingProject.reporting_period || ''}
                         onChange={(e) => updateField('reporting_period', e.target.value as ReportingPeriod)}
-                        className="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors bg-white"
+                        className="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-neutral-500 focus:border-neutral-500 transition-colors bg-white"
                       >
                         <option value="">Select quarter</option>
                         <option value="Q1">Q1 (Jan - Mar)</option>
@@ -312,7 +312,7 @@ export default function Settings() {
                       <select
                         value={editingProject.reporting_year || ''}
                         onChange={(e) => updateField('reporting_year', e.target.value)}
-                        className="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors bg-white"
+                        className="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-neutral-500 focus:border-neutral-500 transition-colors bg-white"
                       >
                         <option value="">Select year</option>
                         {[2024, 2025, 2026, 2027, 2028].map((year) => (
@@ -342,7 +342,7 @@ export default function Settings() {
                           type="text"
                           value={editingProject.declarant_info?.identification_number || ''}
                           onChange={(e) => updateDeclarantField('identification_number', e.target.value)}
-                          className="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors"
+                          className="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-neutral-500 focus:border-neutral-500 transition-colors"
                           placeholder="e.g., DE123456789012345"
                         />
                       </div>
@@ -354,7 +354,7 @@ export default function Settings() {
                           type="text"
                           value={editingProject.declarant_info?.name || ''}
                           onChange={(e) => updateDeclarantField('name', e.target.value)}
-                          className="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors"
+                          className="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-neutral-500 focus:border-neutral-500 transition-colors"
                           placeholder="Enter company name"
                         />
                       </div>
@@ -367,7 +367,7 @@ export default function Settings() {
                         type="text"
                         value={editingProject.declarant_info?.role || ''}
                         onChange={(e) => updateDeclarantField('role', e.target.value)}
-                        className="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors"
+                        className="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-neutral-500 focus:border-neutral-500 transition-colors"
                         placeholder="e.g., Importer"
                       />
                     </div>
@@ -385,7 +385,7 @@ export default function Settings() {
                             type="text"
                             value={editingProject.declarant_info?.address?.country || ''}
                             onChange={(e) => updateDeclarantAddress('country', e.target.value.toUpperCase().slice(0, 2))}
-                            className="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors uppercase"
+                            className="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-neutral-500 focus:border-neutral-500 transition-colors uppercase"
                             placeholder="e.g., DE"
                             maxLength={2}
                           />
@@ -398,7 +398,7 @@ export default function Settings() {
                             type="text"
                             value={editingProject.declarant_info?.address?.city || ''}
                             onChange={(e) => updateDeclarantAddress('city', e.target.value)}
-                            className="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors"
+                            className="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-neutral-500 focus:border-neutral-500 transition-colors"
                             placeholder="Enter city"
                           />
                         </div>
@@ -410,7 +410,7 @@ export default function Settings() {
                             type="text"
                             value={editingProject.declarant_info?.address?.street || ''}
                             onChange={(e) => updateDeclarantAddress('street', e.target.value)}
-                            className="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors"
+                            className="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-neutral-500 focus:border-neutral-500 transition-colors"
                             placeholder="Enter street address"
                           />
                         </div>
@@ -422,7 +422,7 @@ export default function Settings() {
                             type="text"
                             value={editingProject.declarant_info?.address?.postcode || ''}
                             onChange={(e) => updateDeclarantAddress('postcode', e.target.value)}
-                            className="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors"
+                            className="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-neutral-500 focus:border-neutral-500 transition-colors"
                             placeholder="Enter postcode"
                           />
                         </div>
@@ -434,7 +434,7 @@ export default function Settings() {
                             type="text"
                             value={editingProject.declarant_info?.address?.sub_division || ''}
                             onChange={(e) => updateDeclarantAddress('sub_division', e.target.value)}
-                            className="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors"
+                            className="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-neutral-500 focus:border-neutral-500 transition-colors"
                             placeholder="Optional"
                           />
                         </div>
@@ -459,7 +459,7 @@ export default function Settings() {
                           type="text"
                           value={editingProject.installation_info?.name || ''}
                           onChange={(e) => updateInstallationField('name', e.target.value)}
-                          className="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors"
+                          className="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-neutral-500 focus:border-neutral-500 transition-colors"
                           placeholder="e.g., Main Factory"
                         />
                       </div>
@@ -471,7 +471,7 @@ export default function Settings() {
                           type="text"
                           value={editingProject.installation_info?.identifier || ''}
                           onChange={(e) => updateInstallationField('identifier', e.target.value)}
-                          className="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors"
+                          className="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-neutral-500 focus:border-neutral-500 transition-colors"
                           placeholder="Facility ID"
                         />
                       </div>
@@ -485,7 +485,7 @@ export default function Settings() {
                           type="text"
                           value={editingProject.installation_info?.country || ''}
                           onChange={(e) => updateInstallationField('country', e.target.value.toUpperCase().slice(0, 2))}
-                          className="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors uppercase"
+                          className="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-neutral-500 focus:border-neutral-500 transition-colors uppercase"
                           placeholder="e.g., DE"
                           maxLength={2}
                         />
@@ -498,7 +498,7 @@ export default function Settings() {
                           type="text"
                           value={editingProject.installation_info?.economic_activity || ''}
                           onChange={(e) => updateInstallationField('economic_activity', e.target.value)}
-                          className="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors"
+                          className="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-neutral-500 focus:border-neutral-500 transition-colors"
                           placeholder="e.g., Manufacturing"
                         />
                       </div>
@@ -517,7 +517,7 @@ export default function Settings() {
                             type="text"
                             value={editingProject.installation_info?.address?.city || ''}
                             onChange={(e) => updateInstallationAddress('city', e.target.value)}
-                            className="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors"
+                            className="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-neutral-500 focus:border-neutral-500 transition-colors"
                             placeholder="Enter city"
                           />
                         </div>
@@ -529,7 +529,7 @@ export default function Settings() {
                             type="text"
                             value={editingProject.installation_info?.address?.country || ''}
                             onChange={(e) => updateInstallationAddress('country', e.target.value.toUpperCase().slice(0, 2))}
-                            className="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors uppercase"
+                            className="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-neutral-500 focus:border-neutral-500 transition-colors uppercase"
                             placeholder="e.g., DE"
                             maxLength={2}
                           />
@@ -542,7 +542,7 @@ export default function Settings() {
                             type="text"
                             value={editingProject.installation_info?.address?.street || ''}
                             onChange={(e) => updateInstallationAddress('street', e.target.value)}
-                            className="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors"
+                            className="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-neutral-500 focus:border-neutral-500 transition-colors"
                             placeholder="Enter street address"
                           />
                         </div>
@@ -554,7 +554,7 @@ export default function Settings() {
                             type="text"
                             value={editingProject.installation_info?.address?.postcode || ''}
                             onChange={(e) => updateInstallationAddress('postcode', e.target.value)}
-                            className="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors"
+                            className="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-neutral-500 focus:border-neutral-500 transition-colors"
                             placeholder="Enter postcode"
                           />
                         </div>
@@ -577,7 +577,7 @@ export default function Settings() {
                       <select
                         value={editingProject.emission_factor_source || 'commission_default'}
                         onChange={(e) => updateField('emission_factor_source', e.target.value)}
-                        className="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors bg-white"
+                        className="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-neutral-500 focus:border-neutral-500 transition-colors bg-white"
                       >
                         <option value="commission_default">EU Commission Default Values</option>
                         <option value="supplier_specific">Supplier Specific</option>
@@ -594,7 +594,7 @@ export default function Settings() {
                           type="text"
                           value={editingProject.emission_factor_value || ''}
                           onChange={(e) => updateField('emission_factor_value', e.target.value)}
-                          className="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors"
+                          className="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-neutral-500 focus:border-neutral-500 transition-colors"
                           placeholder="e.g., 0.4"
                         />
                       </div>

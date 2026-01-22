@@ -49,14 +49,14 @@ export default function FileDropzone({
 
   return (
     <div className="space-y-4">
-      {/* Dropzone */}
+      {/* Dropzone - black/white theme */}
       <div
         {...getRootProps()}
         className={cn(
           'relative border-2 border-dashed rounded-2xl p-4 text-center transition-all duration-200',
           isDragActive
-            ? 'border-emerald-500 bg-emerald-50'
-            : 'border-slate-300 hover:border-slate-400 hover:bg-slate-50',
+            ? 'border-neutral-900 bg-neutral-100'
+            : 'border-neutral-300 hover:border-neutral-400 hover:bg-neutral-50',
           isUploading && 'opacity-50 cursor-not-allowed'
         )}
       >
@@ -72,7 +72,7 @@ export default function FileDropzone({
             disabled={isUploading}
             className={cn(
               'px-6 py-2.5 rounded-xl font-medium transition-all',
-              'bg-slate-800 text-white hover:bg-slate-700',
+              'bg-neutral-900 text-white hover:bg-neutral-800',
               'disabled:opacity-50 disabled:cursor-not-allowed'
             )}
           >
@@ -90,7 +90,7 @@ export default function FileDropzone({
             exit={{ opacity: 0, height: 0 }}
             className="space-y-2"
           >
-            <p className="text-sm text-slate-600">
+            <p className="text-sm text-neutral-600">
               {selectedFiles.length} file{selectedFiles.length > 1 ? 's' : ''} selected
             </p>
             
@@ -102,17 +102,17 @@ export default function FileDropzone({
                   animate={{ opacity: 1, x: 0 }}
                   exit={{ opacity: 0, x: 20 }}
                   transition={{ delay: index * 0.05 }}
-                  className="flex items-center justify-between p-3 bg-slate-50 rounded-xl border border-slate-200"
+                  className="flex items-center justify-between p-3 bg-neutral-50 rounded-xl border border-neutral-200"
                 >
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-lg bg-red-100 flex items-center justify-center">
-                      <FileText className="w-5 h-5 text-red-500" />
+                    <div className="w-10 h-10 rounded-lg bg-neutral-200 flex items-center justify-center">
+                      <FileText className="w-5 h-5 text-neutral-700" />
                     </div>
                     <div>
-                      <p className="text-sm font-medium text-slate-900 truncate max-w-[300px]">
+                      <p className="text-sm font-medium text-neutral-900 truncate max-w-[300px]">
                         {file.name}
                       </p>
-                      <p className="text-xs text-slate-500">
+                      <p className="text-xs text-neutral-500">
                         {formatFileSize(file.size)}
                       </p>
                     </div>
@@ -124,7 +124,7 @@ export default function FileDropzone({
                       onRemoveFile(index)
                     }}
                     disabled={isUploading}
-                    className="p-1.5 rounded-lg hover:bg-slate-200 text-slate-400 hover:text-slate-600 transition-colors disabled:opacity-50"
+                    className="p-1.5 rounded-lg hover:bg-neutral-200 text-neutral-400 hover:text-neutral-600 transition-colors disabled:opacity-50"
                   >
                     <X className="w-4 h-4" />
                   </button>

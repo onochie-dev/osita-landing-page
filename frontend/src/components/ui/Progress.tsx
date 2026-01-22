@@ -32,9 +32,10 @@ const Progress = forwardRef<HTMLDivElement, ProgressProps>(
       lg: 'h-3',
     }
 
+    // Black/white theme - success uses black
     const variantStyles = {
-      default: 'bg-slate-600',
-      success: 'bg-emerald-500',
+      default: 'bg-neutral-600',
+      success: 'bg-neutral-900',
       danger: 'bg-red-500',
       warning: 'bg-amber-500',
     }
@@ -43,11 +44,11 @@ const Progress = forwardRef<HTMLDivElement, ProgressProps>(
       <div ref={ref} className={cn('w-full', className)} {...props}>
         {(showLabel || label) && (
           <div className="flex justify-between items-center mb-1.5">
-            {label && <span className="text-sm text-slate-600">{label}</span>}
-            {showLabel && <span className="text-sm text-slate-500">{Math.round(percentage)}%</span>}
+            {label && <span className="text-sm text-neutral-600">{label}</span>}
+            {showLabel && <span className="text-sm text-neutral-500">{Math.round(percentage)}%</span>}
           </div>
         )}
-        <div className={cn('w-full bg-slate-200 rounded-full overflow-hidden', sizeStyles[size])}>
+        <div className={cn('w-full bg-neutral-200 rounded-full overflow-hidden', sizeStyles[size])}>
           <div
             className={cn('h-full rounded-full transition-all duration-500 ease-out', variantStyles[variant])}
             style={{ width: `${percentage}%` }}
@@ -61,6 +62,3 @@ const Progress = forwardRef<HTMLDivElement, ProgressProps>(
 Progress.displayName = 'Progress'
 
 export { Progress }
-
-
-

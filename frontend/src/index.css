@@ -6,10 +6,11 @@
 @tailwind utilities;
 
 :root {
-  --color-sidebar-bg: #1e293b;
-  --color-main-bg: #f1f5f9;
+  --color-sidebar-bg: #0a0a0a;
+  --color-main-bg: #fafafa;
   --color-card-bg: #ffffff;
-  --color-border: #e2e8f0;
+  --color-border: #e5e5e5;
+  --color-accent: #171717;
 }
 
 * {
@@ -25,7 +26,7 @@ body {
   padding: 0;
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
   background: var(--color-main-bg);
-  color: #1e293b;
+  color: #171717;
   min-height: 100vh;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -38,16 +39,16 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-  background: #f1f5f9;
+  background: #f5f5f5;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #cbd5e1;
+  background: #d4d4d4;
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #94a3b8;
+  background: #a3a3a3;
 }
 
 /* Animation delays */
@@ -76,10 +77,10 @@ body {
   word-break: break-all;
 }
 
-/* Dropzone styling */
+/* Dropzone styling - black/white theme */
 .dropzone-active {
-  border-color: #10b981 !important;
-  background: rgba(16, 185, 129, 0.05) !important;
+  border-color: #171717 !important;
+  background: rgba(23, 23, 23, 0.05) !important;
 }
 
 /* Table styling */
@@ -88,21 +89,21 @@ body {
 }
 
 .data-table th {
-  @apply px-4 py-3 text-left font-medium text-slate-500 bg-slate-50;
+  @apply px-4 py-3 text-left font-medium text-neutral-500 bg-neutral-50;
 }
 
 .data-table td {
-  @apply px-4 py-3 border-t border-slate-100;
+  @apply px-4 py-3 border-t border-neutral-100;
 }
 
 .data-table tr:hover td {
-  @apply bg-slate-50;
+  @apply bg-neutral-50;
 }
 
 /* Input styling */
 input, select, textarea {
-  @apply bg-white border border-slate-300 rounded-xl px-4 py-2.5 text-slate-900 placeholder-slate-400;
-  @apply focus:outline-none focus:border-slate-500 focus:ring-2 focus:ring-slate-500/20 transition-all;
+  @apply bg-white border border-neutral-300 rounded-xl px-4 py-2.5 text-neutral-900 placeholder-neutral-400;
+  @apply focus:outline-none focus:border-neutral-900 focus:ring-2 focus:ring-neutral-900/20 transition-all;
 }
 
 /* Legacy btn classes for backward compatibility */
@@ -112,13 +113,13 @@ input, select, textarea {
 }
 
 .btn-primary {
-  @apply bg-slate-800 text-white border border-slate-700;
-  @apply hover:bg-slate-700 active:scale-[0.98];
+  @apply bg-neutral-900 text-white border border-neutral-800;
+  @apply hover:bg-neutral-800 active:scale-[0.98];
 }
 
 .btn-secondary {
-  @apply bg-white text-slate-700 border border-slate-300;
-  @apply hover:bg-slate-50 hover:border-slate-400;
+  @apply bg-white text-neutral-700 border border-neutral-300;
+  @apply hover:bg-neutral-50 hover:border-neutral-400;
 }
 
 .btn-danger {
@@ -128,33 +129,33 @@ input, select, textarea {
 
 /* Legacy card class */
 .card {
-  @apply bg-white border border-slate-200 rounded-2xl shadow-sm;
+  @apply bg-white border border-neutral-200 rounded-2xl shadow-sm;
 }
 
-/* File upload card highlight */
+/* File upload card highlight - black/white theme */
 .upload-zone {
-  @apply border-2 border-dashed border-slate-300 rounded-2xl;
-  @apply hover:border-slate-400 hover:bg-slate-50/50 transition-all;
+  @apply border-2 border-dashed border-neutral-300 rounded-2xl;
+  @apply hover:border-neutral-400 hover:bg-neutral-50/50 transition-all;
 }
 
 .upload-zone.active {
-  @apply border-emerald-500 bg-emerald-50/50;
+  @apply border-neutral-900 bg-neutral-50;
 }
 
-/* Status indicators */
+/* Status indicators - keeping some color for UX clarity */
 .status-dot {
   @apply w-2 h-2 rounded-full;
 }
 
-.status-dot-success { @apply bg-emerald-500; }
+.status-dot-success { @apply bg-neutral-900; }
 .status-dot-warning { @apply bg-amber-500; }
 .status-dot-danger { @apply bg-red-500; }
-.status-dot-info { @apply bg-blue-500; }
-.status-dot-neutral { @apply bg-slate-400; }
+.status-dot-info { @apply bg-neutral-500; }
+.status-dot-neutral { @apply bg-neutral-400; }
 
-/* Check icon in circle */
+/* Check icon in circle - black theme */
 .check-circle {
-  @apply w-6 h-6 rounded-full bg-emerald-500 flex items-center justify-center;
+  @apply w-6 h-6 rounded-full bg-neutral-900 flex items-center justify-center;
 }
 
 .check-circle svg {
@@ -163,9 +164,9 @@ input, select, textarea {
 
 /* Submission card styling */
 .submission-card {
-  @apply bg-slate-50 border border-slate-200 rounded-xl p-4;
+  @apply bg-neutral-50 border border-neutral-200 rounded-xl p-4;
 }
 
 .submission-card.success {
-  @apply border-l-4 border-l-emerald-500;
+  @apply border-l-4 border-l-neutral-900;
 }

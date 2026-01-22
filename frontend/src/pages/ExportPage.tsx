@@ -191,14 +191,14 @@ export default function ExportPage() {
             <Card
               className={cn(
                 'mb-6',
-                canExport ? 'border-emerald-200 bg-emerald-50' : 'border-amber-200 bg-amber-50'
+                canExport ? 'border-neutral-200 bg-neutral-50' : 'border-amber-200 bg-amber-50'
               )}
               padding="md"
             >
               <div className="flex items-center gap-4">
                 {canExport ? (
-                  <div className="w-10 h-10 rounded-full bg-emerald-100 flex items-center justify-center">
-                    <CheckCircle className="w-5 h-5 text-emerald-600" />
+                  <div className="w-10 h-10 rounded-full bg-neutral-100 flex items-center justify-center">
+                    <CheckCircle className="w-5 h-5 text-neutral-600" />
                   </div>
                 ) : (
                   <div className="w-10 h-10 rounded-full bg-amber-100 flex items-center justify-center">
@@ -206,7 +206,7 @@ export default function ExportPage() {
                   </div>
                 )}
                 <div className="flex-1">
-                  <p className={cn('font-medium', canExport ? 'text-emerald-800' : 'text-amber-800')}>
+                  <p className={cn('font-medium', canExport ? 'text-neutral-800' : 'text-amber-800')}>
                     {canExport ? 'Ready for Export' : 'Action Required Before Export'}
                   </p>
                   <p className="text-sm text-slate-600">
@@ -466,8 +466,8 @@ export default function ExportPage() {
                 <Card key={record.id} padding="sm">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-4">
-                      {record.format === 'excel' && <FileSpreadsheet className="w-5 h-5 text-emerald-500" />}
-                      {record.format === 'xml' && <FileCode className="w-5 h-5 text-blue-500" />}
+                      {record.format === 'excel' && <FileSpreadsheet className="w-5 h-5 text-neutral-500" />}
+                      {record.format === 'xml' && <FileCode className="w-5 h-5 text-neutral-500" />}
                       {record.format === 'zip' && <Package className="w-5 h-5 text-purple-500" />}
                       <div>
                         <p className="font-medium text-slate-900">{record.filename}</p>
@@ -506,7 +506,7 @@ export default function ExportPage() {
                 </div>
                 <div>
                   <p className="text-xs text-slate-500 uppercase tracking-wide">Indirect Emissions</p>
-                  <p className="text-xl font-semibold text-emerald-600 mt-1">
+                  <p className="text-xl font-semibold text-neutral-600 mt-1">
                     {project.canonical_data.total_indirect_emissions_tco2?.toFixed(3) || '0'} <span className="text-sm">tCO₂</span>
                   </p>
                 </div>

@@ -25,7 +25,7 @@ function App() {
     return (
       <div className="min-h-screen bg-slate-900 flex items-center justify-center">
         <div className="text-center">
-          <Loader2 className="w-8 h-8 animate-spin text-emerald-500 mx-auto mb-4" />
+          <Loader2 className="w-8 h-8 animate-spin text-neutral-400 mx-auto mb-4" />
           <p className="text-slate-400">Loading OSITA...</p>
         </div>
       </div>

@@ -378,7 +378,7 @@ export default function ProjectView() {
 
         {/* How to become compliant - show when not ready */}
         {!canExport && !hasDocuments && (
-          <Card className="mb-6 bg-blue-50 border-blue-200" padding="md">
+          <Card className="mb-6 bg-neutral-100 border-neutral-200" padding="md">
             <CardHeader title="How to get compliant" />
             <CardContent>
               <ol className="text-sm text-slate-700 space-y-2 list-decimal list-inside">

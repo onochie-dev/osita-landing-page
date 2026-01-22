@@ -11,12 +11,13 @@ const Badge = forwardRef<HTMLSpanElement, BadgeProps>(
   ({ className, variant = 'neutral', size = 'md', dot = false, children, ...props }, ref) => {
     const baseStyles = 'inline-flex items-center gap-1.5 font-medium rounded-full'
 
+    // Black/white theme - success uses black, info uses gray
     const variantStyles = {
-      success: 'bg-emerald-50 text-emerald-700 border border-emerald-200',
+      success: 'bg-neutral-900 text-white border border-neutral-800',
       danger: 'bg-red-50 text-red-700 border border-red-200',
       warning: 'bg-amber-50 text-amber-700 border border-amber-200',
-      info: 'bg-blue-50 text-blue-700 border border-blue-200',
-      neutral: 'bg-slate-100 text-slate-600 border border-slate-200',
+      info: 'bg-neutral-100 text-neutral-700 border border-neutral-200',
+      neutral: 'bg-neutral-100 text-neutral-600 border border-neutral-200',
     }
 
     const sizeStyles = {
@@ -25,11 +26,11 @@ const Badge = forwardRef<HTMLSpanElement, BadgeProps>(
     }
 
     const dotColors = {
-      success: 'bg-emerald-500',
+      success: 'bg-white',
       danger: 'bg-red-500',
       warning: 'bg-amber-500',
-      info: 'bg-blue-500',
-      neutral: 'bg-slate-400',
+      info: 'bg-neutral-500',
+      neutral: 'bg-neutral-400',
     }
 
     return (
@@ -48,6 +49,3 @@ const Badge = forwardRef<HTMLSpanElement, BadgeProps>(
 Badge.displayName = 'Badge'
 
 export { Badge }
-
-
-

@@ -7,30 +7,30 @@ export default {
   theme: {
     extend: {
       colors: {
-        // Osita brand palette - clean and professional
+        // OSITA brand palette - black/white theme
         osita: {
-          50: '#f0fdf9',
-          100: '#ccfbeb',
-          200: '#9af5d8',
-          300: '#5eeac2',
-          400: '#2dd4a8',
-          500: '#14b890',
-          600: '#0d9474',
-          700: '#0f7660',
-          800: '#125d4e',
-          900: '#134d42',
-          950: '#042f27',
+          50: '#fafafa',
+          100: '#f5f5f5',
+          200: '#e5e5e5',
+          300: '#d4d4d4',
+          400: '#a3a3a3',
+          500: '#737373',
+          600: '#525252',
+          700: '#404040',
+          800: '#262626',
+          900: '#171717',
+          950: '#0a0a0a',
         },
-        // Sidebar dark theme
+        // Sidebar dark theme - pure black
         sidebar: {
-          bg: '#1e293b',
-          hover: '#334155',
-          border: '#334155',
+          bg: '#0a0a0a',
+          hover: '#171717',
+          border: '#262626',
         },
-        // Extended slate for more options
-        slate: {
-          750: '#293548',
-          850: '#172033',
+        // Extended neutral scale
+        neutral: {
+          750: '#333333',
+          850: '#1a1a1a',
         },
       },
       fontFamily: {

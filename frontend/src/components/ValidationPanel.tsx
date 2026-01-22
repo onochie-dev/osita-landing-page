@@ -33,9 +33,9 @@ export default function ValidationPanel({
     },
     info: {
       icon: Info,
-      color: 'text-blue-600',
-      bgColor: 'bg-blue-50',
-      borderColor: 'border-blue-200',
+      color: 'text-neutral-600',
+      bgColor: 'bg-neutral-50',
+      borderColor: 'border-neutral-200',
     },
   }
 
@@ -46,14 +46,14 @@ export default function ValidationPanel({
         className={cn(
           'p-4 rounded-2xl border flex items-center justify-between',
           canExport
-            ? 'bg-emerald-50 border-emerald-200'
+            ? 'bg-neutral-50 border-neutral-200'
             : 'bg-red-50 border-red-200'
         )}
       >
         <div className="flex items-center gap-3">
           {canExport ? (
-            <div className="w-10 h-10 rounded-full bg-emerald-100 flex items-center justify-center">
-              <CheckCircle className="w-5 h-5 text-emerald-600" />
+            <div className="w-10 h-10 rounded-full bg-neutral-100 flex items-center justify-center">
+              <CheckCircle className="w-5 h-5 text-neutral-600" />
             </div>
           ) : (
             <div className="w-10 h-10 rounded-full bg-red-100 flex items-center justify-center">
@@ -61,7 +61,7 @@ export default function ValidationPanel({
             </div>
           )}
           <div>
-            <p className={cn('font-medium', canExport ? 'text-emerald-800' : 'text-red-800')}>
+            <p className={cn('font-medium', canExport ? 'text-neutral-800' : 'text-red-800')}>
               {canExport ? 'Ready for Export' : 'Review Required'}
             </p>
             <p className="text-sm text-slate-600">
@@ -127,7 +127,7 @@ export default function ValidationPanel({
 
       {flags.length === 0 && (
         <div className="text-center py-8 text-slate-500">
-          <CheckCircle className="w-12 h-12 mx-auto mb-3 text-emerald-400" />
+          <CheckCircle className="w-12 h-12 mx-auto mb-3 text-neutral-400" />
           <p>No validation issues found</p>
         </div>
       )}
