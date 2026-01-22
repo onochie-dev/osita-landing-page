@@ -118,7 +118,7 @@ export function Sidebar() {
 
       {/* Bottom Navigation */}
       <div className="p-4 border-t border-slate-800 space-y-1">
-        <NavItem to="/settings" icon={Settings} disabled>
+        <NavItem to="/settings" icon={Settings}>
           Settings
         </NavItem>
         <NavItem to="/help" icon={HelpCircle} disabled>

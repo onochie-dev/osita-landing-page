@@ -7,6 +7,7 @@ import Dashboard from './pages/Dashboard'
 import ProjectView from './pages/ProjectView'
 import DocumentReview from './pages/DocumentReview'
 import ExportPage from './pages/ExportPage'
+import Settings from './pages/Settings'
 import Login from './pages/Login'
 import Signup from './pages/Signup'
 import { useAuth } from './stores/authStore'
@@ -50,6 +51,7 @@ function App() {
         <Route path="project/:projectId" element={<ProjectView />} />
         <Route path="project/:projectId/document/:documentId" element={<DocumentReview />} />
         <Route path="project/:projectId/export" element={<ExportPage />} />
+        <Route path="settings" element={<Settings />} />
       </Route>
 
       {/* Catch all - redirect to home */}

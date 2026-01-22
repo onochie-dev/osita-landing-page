@@ -87,3 +87,4 @@ CREATE TRIGGER update_profiles_updated_at
 -- ALTER TABLE public.projects ADD COLUMN user_id UUID REFERENCES auth.users(id);
 -- CREATE INDEX idx_projects_user_id ON public.projects(user_id);
 
+
