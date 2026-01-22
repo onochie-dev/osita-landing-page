@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { supabase } from '../lib/supabase'
 
 const api = axios.create({
   baseURL: '/api',
@@ -7,9 +8,17 @@ const api = axios.create({
   },
 })
 
-// Request interceptor
+// Request interceptor - add user ID to all requests
 api.interceptors.request.use(
-  (config) => {
+  async (config) => {
+    // Get current user from Supabase
+    const { data: { user } } = await supabase.auth.getUser()
+    
+    if (user) {
+      // Add user ID to request headers
+      config.headers['X-User-ID'] = user.id
+    }
+    
     return config
   },
   (error) => {
@@ -28,4 +37,3 @@ api.interceptors.response.use(
 )
 
 export default api
-

@@ -33,6 +33,7 @@ class Project(Base, TimestampMixin):
     __tablename__ = "projects"
 
     id = Column(String(36), primary_key=True, default=generate_uuid)
+    user_id = Column(String(36), nullable=False, index=True)  # Supabase user ID
     name = Column(String(255), nullable=False)
     description = Column(Text, nullable=True)
     status = Column(Enum(ProjectStatus), default=ProjectStatus.DRAFT, nullable=False)
