@@ -10,7 +10,6 @@ import {
   FileCode,
   Send,
   Check,
-  ChevronRight,
   AlertTriangle,
   Info,
 } from 'lucide-react'
@@ -25,6 +24,7 @@ import { Card, CardHeader, CardContent } from '../components/ui/Card'
 import { Progress } from '../components/ui/Progress'
 import { Button } from '../components/ui/Button'
 import { Badge } from '../components/ui/Badge'
+import { Breadcrumb } from '../components/ui/Breadcrumb'
 
 export default function ProjectView() {
   const { projectId } = useParams<{ projectId: string }>()
@@ -117,13 +117,7 @@ export default function ProjectView() {
       {/* Main Content */}
       <div className="flex-1 p-6 overflow-auto">
         {/* Breadcrumb Navigation */}
-        <div className="flex items-center gap-2 text-sm text-slate-500 mb-4">
-          <Link to="/" className="hover:text-slate-700 transition-colors">
-            Projects
-          </Link>
-          <ChevronRight className="w-4 h-4" />
-          <span className="text-slate-900 font-medium">{project.name}</span>
-        </div>
+        <Breadcrumb items={[{ label: project.name }]} />
 
         {/* Header */}
         <div className="mb-6">

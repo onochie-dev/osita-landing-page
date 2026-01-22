@@ -4,7 +4,6 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { motion } from 'framer-motion'
 import {
   ArrowLeft,
-  ChevronRight,
   FileSpreadsheet,
   FileCode,
   Package,
@@ -25,6 +24,7 @@ import { exportsApi } from '../api/exports'
 import { Card, CardHeader, CardContent } from '../components/ui/Card'
 import { Button } from '../components/ui/Button'
 import { Badge } from '../components/ui/Badge'
+import { Breadcrumb } from '../components/ui/Breadcrumb'
 
 export default function ExportPage() {
   const { projectId } = useParams<{ projectId: string }>()
@@ -157,17 +157,12 @@ export default function ExportPage() {
       <header className="bg-white border-b border-slate-200 sticky top-0 z-10">
         <div className="max-w-5xl mx-auto px-6 py-4">
           {/* Breadcrumb */}
-          <div className="flex items-center gap-2 text-sm text-slate-500 mb-3">
-            <Link to="/" className="hover:text-slate-700 transition-colors">
-              Projects
-            </Link>
-            <ChevronRight className="w-4 h-4" />
-            <Link to={`/project/${projectId}`} className="hover:text-slate-700 transition-colors">
-              {project?.name}
-            </Link>
-            <ChevronRight className="w-4 h-4" />
-            <span className="text-slate-900">Export</span>
-          </div>
+          <Breadcrumb
+            items={[
+              { label: project?.name || 'Project', href: `/project/${projectId}` },
+              { label: 'Export' }
+            ]}
+          />
 
           <div className="flex items-center gap-4">
             <Link

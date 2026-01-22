@@ -12,5 +12,5 @@ export type { ProgressProps } from './Progress'
 
 export { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from './Accordion'
 
-
-
+export { Breadcrumb } from './Breadcrumb'
+export type { BreadcrumbItem } from './Breadcrumb'

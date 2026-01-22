@@ -21,6 +21,7 @@ import { projectsApi } from '../api/projects'
 import { Card } from '../components/ui/Card'
 import { Button } from '../components/ui/Button'
 import { Badge } from '../components/ui/Badge'
+import { Breadcrumb } from '../components/ui/Breadcrumb'
 import type { Project, ProjectUpdate, ReportingPeriod, DeclarantInfo, InstallationInfo, Address } from '../types'
 
 export default function Settings() {
@@ -156,6 +157,9 @@ export default function Settings() {
 
   return (
     <div className="p-8 max-w-7xl mx-auto">
+      {/* Breadcrumb */}
+      <Breadcrumb items={[{ label: 'Settings' }]} />
+
       {/* Header */}
       <div className="mb-8">
         <div className="flex items-center gap-3 mb-2">

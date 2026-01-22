@@ -3,7 +3,6 @@ import { useParams, Link, useNavigate } from 'react-router-dom'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import {
   ArrowLeft,
-  ChevronRight,
   Check,
   CheckCircle,
   Edit3,
@@ -21,6 +20,7 @@ import { extractionsApi } from '../api/extractions'
 import { projectsApi } from '../api/projects'
 import { Card } from '../components/ui/Card'
 import { Button } from '../components/ui/Button'
+import { Breadcrumb } from '../components/ui/Breadcrumb'
 import type { ExtractedField, FieldStatus } from '../types'
 
 export default function DocumentReview() {
@@ -91,17 +91,12 @@ export default function DocumentReview() {
       <header className="sticky top-0 z-10 bg-white border-b border-slate-200">
         <div className="px-6 py-4">
           {/* Breadcrumb */}
-          <div className="flex items-center gap-2 text-sm text-slate-500 mb-3">
-            <Link to="/" className="hover:text-slate-700 transition-colors">
-              Projects
-            </Link>
-            <ChevronRight className="w-4 h-4" />
-            <Link to={`/project/${projectId}`} className="hover:text-slate-700 transition-colors">
-              {project?.name}
-            </Link>
-            <ChevronRight className="w-4 h-4" />
-            <span className="text-slate-900">{document.original_filename}</span>
-          </div>
+          <Breadcrumb
+            items={[
+              { label: project?.name || 'Project', href: `/project/${projectId}` },
+              { label: document.original_filename }
+            ]}
+          />
 
           {/* Title Row */}
           <div className="flex items-center justify-between">
