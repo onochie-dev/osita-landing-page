@@ -1,5 +1,6 @@
 import { create } from 'zustand'
 import { supabase, Profile } from '../lib/supabase'
+import { queryClient } from '../lib/queryClient'
 import type { User, Session } from '@supabase/supabase-js'
 
 interface AuthState {
@@ -59,6 +60,11 @@ export const useAuthStore = create<AuthState>((set) => ({
       // Listen for auth changes
       supabase.auth.onAuthStateChange(async (event, session) => {
         console.log('Auth state changed:', event)
+        
+        // Clear all cached data when user changes
+        if (event === 'SIGNED_IN' || event === 'SIGNED_OUT' || event === 'USER_UPDATED') {
+          queryClient.clear()
+        }
         
         if (session?.user) {
           // Fetch profile on auth change
@@ -120,6 +126,9 @@ export const useAuthStore = create<AuthState>((set) => ({
       }
 
       if (data.user) {
+        // Clear any cached data from previous user
+        queryClient.clear()
+        
         // Create profile
         const { error: profileError } = await supabase
           .from('profiles')
@@ -161,6 +170,9 @@ export const useAuthStore = create<AuthState>((set) => ({
     set({ isLoading: true, error: null })
 
     try {
+      // Clear any cached data from previous user BEFORE signing in
+      queryClient.clear()
+      
       const { data, error } = await supabase.auth.signInWithPassword({
         email,
         password,
@@ -199,6 +211,9 @@ export const useAuthStore = create<AuthState>((set) => ({
     set({ isLoading: true })
     
     try {
+      // Clear all cached data
+      queryClient.clear()
+      
       await supabase.auth.signOut()
       set({
         user: null,
@@ -233,4 +248,3 @@ export const useAuth = () => {
     initialize: store.initialize,
   }
 }
-
