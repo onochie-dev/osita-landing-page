@@ -1,176 +1,123 @@
-# Osita — CBAM Filing Engine
+# Osita Monorepo
 
-<p align="center">
-  <img src="frontend/public/osita-icon.svg" width="80" alt="Osita Logo">
-</p>
+This repository contains all Osita projects:
 
-**Osita** is a CBAM (Carbon Border Adjustment Mechanism) filing engine that streamlines the process of reporting indirect emissions from electricity. Upload energy bills, extract data automatically using AI, review and validate, then export to Excel and XML formats compliant with the CBAM transitional registry.
+| App | Description | Tech | Production URL |
+|-----|-------------|------|----------------|
+| `apps/landing` | Marketing website | Next.js 16 | `https://osita.eu` |
+| `apps/webapp` | CBAM Filing Engine SPA | React + Vite | `https://app.osita.eu` |
+| `apps/api` | Backend API | FastAPI | `https://api.osita.eu` |
 
-## ✨ Features
+## Quick Start (Local Development)
 
-- **📄 PDF Upload & Processing** — Drag-and-drop energy bill PDFs (any format, any quality)
-- **🤖 AI-Powered Extraction** — Mistral OCR + OpenAI structured extraction
-- **🌍 Multilingual Support** — English, French, Arabic (with RTL rendering)
-- **✅ Validation Engine** — Unit consistency, totals reconciliation, completeness checks
-- **📊 Review Interface** — Edit extracted values with full audit trail
-- **📁 Export Options** — Excel workbook, CBAM-compliant XML, ZIP package
-
-## 🚀 Quick Start
-
-### Prerequisites
-
-- Python 3.10+
-- Node.js 18+
-- API Keys (place in `.env`):
-  - OpenAI API Key
-  - Mistral AI API Key
-
-### Setup
-
-1. **Clone and configure environment**
+### 1. API (Backend)
 
 ```bash
-cd /Users/Uju/Desktop/OSITA2
-
-# Copy environment template and add your API keys
-cp env.template .env
-# Edit .env with your actual API keys
-```
-
-2. **Install Backend Dependencies**
-
-```bash
-cd backend
+cd apps/api
 python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
+# Windows: venv\Scripts\activate
+# macOS/Linux: source venv/bin/activate
 pip install -r requirements.txt
-```
 
-3. **Install Frontend Dependencies**
+# Copy env template and add your keys
+cp ../../env.template .env
+# Edit .env with OPENAI_API_KEY, MISTRAL_API_KEY, etc.
 
-```bash
-cd ../frontend
-npm install
-```
-
-### Running the Application
-
-**Terminal 1 — Backend:**
-```bash
-cd backend
-source venv/bin/activate
 python run.py
+# Runs at http://localhost:8000
 ```
-Backend runs at: http://localhost:8000
 
-**Terminal 2 — Frontend:**
+### 2. Webapp (Frontend)
+
 ```bash
-cd frontend
+cd apps/webapp
+npm install
+
+# Create .env with Supabase credentials
+# VITE_SUPABASE_URL=...
+# VITE_SUPABASE_ANON_KEY=...
+
 npm run dev
-```
-Frontend runs at: http://localhost:5173
-
-### API Documentation
-
-Once the backend is running, visit:
-- Swagger UI: http://localhost:8000/docs
-- ReDoc: http://localhost:8000/redoc
-
-## 📂 Project Structure
-
-```
-OSITA2/
-├── backend/
-│   ├── app/
-│   │   ├── api/            # API routes (projects, documents, exports)
-│   │   ├── models/         # SQLAlchemy database models
-│   │   ├── schemas/        # Pydantic validation schemas
-│   │   ├── services/       # Business logic (OCR, extraction, validation)
-│   │   ├── config.py       # Environment configuration
-│   │   ├── database.py     # Database setup
-│   │   └── main.py         # FastAPI application
-│   ├── requirements.txt
-│   └── run.py
-├── frontend/
-│   ├── src/
-│   │   ├── api/            # API client functions
-│   │   ├── components/     # Reusable UI components
-│   │   ├── pages/          # Page components
-│   │   └── types/          # TypeScript type definitions
-│   ├── package.json
-│   └── vite.config.ts
-├── env.template            # Environment variables template
-└── README.md
+# Runs at http://localhost:5173 (proxies /api to localhost:8000)
 ```
 
-## 🔧 Configuration
+### 3. Landing Page
 
-### Environment Variables
+```bash
+cd apps/landing
+npm install
 
-| Variable | Description | Default |
-|----------|-------------|---------|
-| `OPENAI_API_KEY` | OpenAI API key for extraction | Required |
-| `MISTRAL_API_KEY` | Mistral AI API key for OCR | Required |
-| `DATABASE_URL` | SQLite database URL | `sqlite:///./osita.db` |
-| `UPLOAD_DIR` | Directory for uploaded files | `./uploads` |
-| `SECRET_KEY` | Application secret key | Dev default |
+# Create .env.local
+# NEXT_PUBLIC_WEBAPP_URL=http://localhost:5173
 
-### Mock Mode
+npm run dev
+# Runs at http://localhost:3000
+```
 
-If API keys are not configured, the application runs in **mock mode** with simulated OCR and extraction results. This is useful for development and testing.
+## Production Deployment
 
-## 📋 User Workflow
+### Landing (`osita.eu`) — Vercel
 
-1. **Create Project** — Set reporting period, declarant info, emission factor source
-2. **Upload Documents** — Drag-and-drop PDF energy bills
-3. **Automatic Processing** — OCR → Extraction → Validation
-4. **Review & Edit** — Confirm or correct extracted values
-5. **Validate** — Check for blocking issues
-6. **Export** — Download Excel, XML, or ZIP package
+1. Create a Vercel project
+2. Set **Root Directory** to `apps/landing`
+3. Add environment variable:
+   - `NEXT_PUBLIC_WEBAPP_URL=https://app.osita.eu`
+4. Assign domain `osita.eu`
 
-## 🏗️ Technical Stack
+### Webapp (`app.osita.eu`) — Vercel
 
-### Backend
-- **FastAPI** — Modern Python web framework
-- **SQLAlchemy** — ORM for database operations
-- **Pydantic** — Data validation and settings
-- **Mistral AI** — OCR processing
-- **OpenAI** — Structured data extraction
-- **lxml** — XML generation (CBAM schema)
-- **openpyxl** — Excel generation
+1. Create a Vercel project
+2. Set **Root Directory** to `apps/webapp`
+3. Add environment variables:
+   - `VITE_API_URL=https://api.osita.eu`
+   - `VITE_SUPABASE_URL=...`
+   - `VITE_SUPABASE_ANON_KEY=...`
+4. Assign domain `app.osita.eu`
 
-### Frontend
-- **React 18** — UI framework
-- **TypeScript** — Type safety
-- **Vite** — Build tool
-- **TanStack Query** — Data fetching and caching
-- **Tailwind CSS** — Styling
-- **Framer Motion** — Animations
-- **Lucide React** — Icons
+### API (`api.osita.eu`) — Render / Railway / Fly.io
 
-## 📊 CBAM Compliance
+Deploy the FastAPI backend to any Python host. Example with Render:
 
-Osita generates XML files conforming to the CBAM quarterly report XSD schema. The export includes:
+1. Create a new Web Service pointing to this repo
+2. Set **Root Directory** to `apps/api`
+3. Build command: `pip install -r requirements.txt`
+4. Start command: `uvicorn app.main:app --host 0.0.0.0 --port $PORT`
+5. Add environment variables:
+   - `OPENAI_API_KEY`
+   - `MISTRAL_API_KEY`
+   - `SECRET_KEY`
+   - `CORS_ORIGINS=https://osita.eu,https://app.osita.eu`
+   - `DATABASE_URL` (use Postgres in production)
+6. Assign custom domain `api.osita.eu`
 
-- Reporting period and year
-- Declarant information
-- Installation details
-- Electricity consumption (MWh)
-- Indirect emissions (tCO₂)
-- Emission factor source and value
+## Project Structure
 
-## 🔒 Security Notes
+```
+osita-landing-page/
+├── apps/
+│   ├── api/           # FastAPI backend
+│   ├── landing/       # Next.js marketing site
+│   └── webapp/        # React CBAM filing app
+├── supabase/          # Supabase SQL setup
+├── training/          # ML fine-tuning scripts
+├── env.template       # Environment variables template
+└── README.md          # This file
+```
 
-- All files are stored locally
-- HTTPS recommended for production
-- Environment variables for sensitive data
-- CORS configured for development
+## Environment Variables Reference
 
-## 📝 License
+See `env.template` for the full list. Key variables:
 
-MIT License
+| Variable | Used By | Description |
+|----------|---------|-------------|
+| `OPENAI_API_KEY` | api | OpenAI for structured extraction |
+| `MISTRAL_API_KEY` | api | Mistral for OCR |
+| `VITE_SUPABASE_URL` | webapp | Supabase project URL |
+| `VITE_SUPABASE_ANON_KEY` | webapp | Supabase anon key |
+| `VITE_API_URL` | webapp | Backend API URL (production) |
+| `NEXT_PUBLIC_WEBAPP_URL` | landing | Webapp URL for login redirect |
+| `CORS_ORIGINS` | api | Allowed origins (comma-separated) |
 
 ---
 
 **Built for CBAM transitional reporting** | Osita v0.1.0
-
