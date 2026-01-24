@@ -38,11 +38,11 @@ const statusConfig: Record<string, {
 }
 
 const variantStyles = {
-  success: 'bg-neutral-900 text-white border-neutral-800',
-  warning: 'bg-amber-50 text-amber-700 border-amber-200',
-  danger: 'bg-red-50 text-red-700 border-red-200',
-  info: 'bg-neutral-100 text-neutral-700 border-neutral-200',
-  neutral: 'bg-slate-100 text-slate-600 border-slate-200',
+  success: 'bg-osita-900 text-white',
+  warning: 'bg-amber-50 text-amber-700 border border-amber-100',
+  danger: 'bg-red-50 text-red-600 border border-red-100',
+  info: 'bg-osita-100 text-osita-700 border border-osita-200/80',
+  neutral: 'bg-osita-100 text-osita-600 border border-osita-200/60',
 }
 
 export default function StatusBadge({ status, size = 'sm', className }: StatusBadgeProps) {
@@ -53,13 +53,13 @@ export default function StatusBadge({ status, size = 'sm', className }: StatusBa
   }
 
   const Icon = config.icon
-  
+
   return (
     <span
       className={cn(
-        'inline-flex items-center gap-1.5 font-medium rounded-full border',
+        'inline-flex items-center gap-1.5 font-medium rounded-full transition-all duration-200',
         variantStyles[config.variant],
-        size === 'sm' ? 'px-2 py-0.5 text-xs' : 'px-3 py-1 text-sm',
+        size === 'sm' ? 'px-2.5 py-1 text-[11px] tracking-wide' : 'px-3 py-1.5 text-caption',
         className
       )}
     >

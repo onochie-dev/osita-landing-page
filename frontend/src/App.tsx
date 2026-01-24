@@ -23,10 +23,13 @@ function App() {
   // Show loading while auth initializes
   if (!isInitialized) {
     return (
-      <div className="min-h-screen bg-slate-900 flex items-center justify-center">
+      <div className="min-h-screen bg-osita-900 flex items-center justify-center">
         <div className="text-center">
-          <Loader2 className="w-8 h-8 animate-spin text-neutral-400 mx-auto mb-4" />
-          <p className="text-slate-400">Loading OSITA...</p>
+          <div className="w-14 h-14 mx-auto mb-6 rounded-xl bg-white flex items-center justify-center">
+            <span className="text-osita-900 font-bold text-2xl">O</span>
+          </div>
+          <Loader2 className="w-6 h-6 animate-spin text-white/60 mx-auto mb-3" />
+          <p className="text-white/50 text-sm">Loading OSITA...</p>
         </div>
       </div>
     )

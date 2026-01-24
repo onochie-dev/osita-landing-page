@@ -64,7 +64,7 @@ export default function ValidationPanel({
             <p className={cn('font-medium', canExport ? 'text-neutral-800' : 'text-red-800')}>
               {canExport ? 'Ready for Export' : 'Review Required'}
             </p>
-            <p className="text-sm text-slate-600">
+            <p className="text-sm text-osita-600">
               {blockingCount} blocking · {warningCount} warnings · {infoCount} info
             </p>
           </div>
@@ -98,15 +98,15 @@ export default function ValidationPanel({
                       <span className={cn('font-medium', config.color)}>
                         {flag.code}
                       </span>
-                      <span className="text-xs text-slate-600 px-2 py-0.5 bg-white/50 rounded-full">
+                      <span className="text-xs text-osita-600 px-2 py-0.5 bg-white/50 rounded-full">
                         {flag.category.replace('_', ' ')}
                       </span>
                     </div>
                     
-                    <p className="text-sm text-slate-700 mb-2">{flag.message}</p>
+                    <p className="text-sm text-osita-700 mb-2">{flag.message}</p>
                     
                     {flag.suggestion && (
-                      <div className="flex items-center gap-2 text-xs text-slate-500">
+                      <div className="flex items-center gap-2 text-xs text-osita-500">
                         <ChevronRight className="w-3.5 h-3.5" />
                         <span>{flag.suggestion}</span>
                       </div>
@@ -114,7 +114,7 @@ export default function ValidationPanel({
                   </div>
 
                   {(flag.is_resolved || flag.is_acknowledged) && (
-                    <span className="text-xs px-2 py-1 rounded-full bg-white/50 text-slate-600">
+                    <span className="text-xs px-2 py-1 rounded-full bg-white/50 text-osita-600">
                       {flag.is_resolved ? 'Resolved' : 'Acknowledged'}
                     </span>
                   )}
@@ -126,7 +126,7 @@ export default function ValidationPanel({
       )}
 
       {flags.length === 0 && (
-        <div className="text-center py-8 text-slate-500">
+        <div className="text-center py-8 text-osita-500">
           <CheckCircle className="w-12 h-12 mx-auto mb-3 text-neutral-400" />
           <p>No validation issues found</p>
         </div>

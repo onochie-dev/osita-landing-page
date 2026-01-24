@@ -28,38 +28,41 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     ref
   ) => {
     const baseStyles = cn(
-      'inline-flex items-center justify-center gap-2 font-medium rounded-xl transition-all duration-200',
-      'focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-transparent',
-      'disabled:opacity-50 disabled:cursor-not-allowed',
+      'inline-flex items-center justify-center gap-2 font-medium rounded-xl',
+      'transition-all duration-200 ease-smooth',
+      'focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2',
+      'disabled:opacity-40 disabled:cursor-not-allowed disabled:pointer-events-none',
       fullWidth && 'w-full'
     )
 
     const variantStyles = {
       primary: cn(
-        'bg-slate-800 text-white border border-slate-700',
-        'hover:bg-slate-700 active:scale-[0.98]',
-        'focus:ring-slate-500'
+        'bg-osita-900 text-white',
+        'hover:bg-osita-800 active:scale-[0.98]',
+        'focus-visible:ring-osita-900/40',
+        'shadow-[0_1px_2px_rgba(0,0,0,0.1),inset_0_1px_0_rgba(255,255,255,0.06)]'
       ),
       secondary: cn(
-        'bg-white/5 text-slate-300 border border-slate-700',
-        'hover:bg-white/10 hover:text-white',
-        'focus:ring-slate-500'
+        'bg-white text-osita-700 border border-osita-200',
+        'hover:bg-osita-50 hover:border-osita-300 active:scale-[0.98]',
+        'focus-visible:ring-osita-500/20'
       ),
       ghost: cn(
-        'text-slate-400 hover:text-white hover:bg-white/5',
-        'focus:ring-slate-500'
+        'text-osita-600',
+        'hover:bg-osita-100 hover:text-osita-900',
+        'focus-visible:ring-osita-500/20'
       ),
       danger: cn(
-        'bg-red-500/10 text-red-400 border border-red-500/20',
-        'hover:bg-red-500/20',
-        'focus:ring-red-500'
+        'bg-red-50 text-red-600 border border-red-100',
+        'hover:bg-red-100 hover:border-red-200 active:scale-[0.98]',
+        'focus-visible:ring-red-500/20'
       ),
     }
 
     const sizeStyles = {
-      sm: 'px-3 py-1.5 text-sm',
-      md: 'px-4 py-2.5 text-sm',
-      lg: 'px-6 py-3 text-base',
+      sm: 'px-3.5 py-2 text-body-sm',
+      md: 'px-5 py-2.5 text-body-sm',
+      lg: 'px-6 py-3.5 text-body',
     }
 
     return (
@@ -89,6 +92,3 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
 Button.displayName = 'Button'
 
 export { Button }
-
-
-

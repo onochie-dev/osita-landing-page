@@ -60,7 +60,7 @@ const AccordionItem = forwardRef<HTMLDivElement, AccordionItemProps>(
         ref={ref}
         data-state={isOpen ? 'open' : 'closed'}
         className={cn(
-          'bg-white border border-slate-200 rounded-2xl overflow-hidden transition-shadow',
+          'bg-white border border-osita-200 rounded-2xl overflow-hidden transition-shadow',
           isOpen && 'shadow-sm',
           className
         )}
@@ -92,7 +92,7 @@ const AccordionTrigger = forwardRef<HTMLButtonElement, AccordionTriggerProps>(
         onClick={() => context.toggleItem(value)}
         className={cn(
           'w-full flex items-center justify-between px-5 py-4 text-left',
-          'text-slate-900 font-medium hover:bg-slate-50 transition-colors',
+          'text-osita-900 font-medium hover:bg-osita-50 transition-colors',
           className
         )}
         {...props}
@@ -100,7 +100,7 @@ const AccordionTrigger = forwardRef<HTMLButtonElement, AccordionTriggerProps>(
         {children}
         <ChevronDown
           className={cn(
-            'w-5 h-5 text-slate-400 transition-transform duration-200',
+            'w-5 h-5 text-osita-400 transition-transform duration-200',
             isOpen && 'rotate-180'
           )}
         />
@@ -133,7 +133,7 @@ const AccordionContent = forwardRef<HTMLDivElement, AccordionContentProps>(
           >
             <div
               ref={ref}
-              className={cn('px-5 pb-5 border-t border-slate-100', className)}
+              className={cn('px-5 pb-5 border-t border-osita-100', className)}
               {...props}
             >
               <div className="pt-4">{children}</div>

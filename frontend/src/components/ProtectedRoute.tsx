@@ -13,10 +13,10 @@ export function ProtectedRoute({ children }: ProtectedRouteProps) {
   // Show loading while initializing auth
   if (!isInitialized || isLoading) {
     return (
-      <div className="min-h-screen bg-slate-100 flex items-center justify-center">
+      <div className="min-h-screen bg-osita-50 flex items-center justify-center">
         <div className="text-center">
-          <Loader2 className="w-8 h-8 animate-spin text-slate-400 mx-auto mb-4" />
-          <p className="text-slate-500">Loading...</p>
+          <Loader2 className="w-8 h-8 animate-spin text-osita-400 mx-auto mb-4" />
+          <p className="text-osita-500 text-sm">Loading...</p>
         </div>
       </div>
     )

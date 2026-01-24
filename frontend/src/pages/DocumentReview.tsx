@@ -64,16 +64,16 @@ export default function DocumentReview() {
 
   if (docLoading || fieldsLoading) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-slate-100">
-        <Loader2 className="w-8 h-8 animate-spin text-slate-400" />
+      <div className="flex items-center justify-center min-h-screen bg-osita-50">
+        <Loader2 className="w-8 h-8 animate-spin text-osita-400" />
       </div>
     )
   }
 
   if (!document) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-screen bg-slate-100">
-        <p className="text-slate-500 mb-4">Document not found</p>
+      <div className="flex flex-col items-center justify-center min-h-screen bg-osita-50">
+        <p className="text-osita-500 mb-4">Document not found</p>
         <Link to={`/project/${projectId}`} className="btn btn-secondary">
           <ArrowLeft className="w-4 h-4" />
           Back to Project
@@ -86,9 +86,9 @@ export default function DocumentReview() {
   const unconfirmedCount = fields?.filter((f) => f.status === 'unconfirmed').length || 0
 
   return (
-    <div className="min-h-screen flex flex-col bg-slate-100">
+    <div className="min-h-screen flex flex-col bg-osita-50">
       {/* Header */}
-      <header className="sticky top-0 z-10 bg-white border-b border-slate-200">
+      <header className="sticky top-0 z-10 bg-white border-b border-osita-200">
         <div className="px-6 py-4">
           {/* Breadcrumb */}
           <Breadcrumb
@@ -103,7 +103,7 @@ export default function DocumentReview() {
             <div className="flex items-center gap-4">
               <button
                 onClick={() => navigate(`/project/${projectId}`)}
-                className="p-2 rounded-xl hover:bg-slate-100 text-slate-500 hover:text-slate-700 transition-colors"
+                className="p-2 rounded-xl hover:bg-osita-50 text-osita-500 hover:text-osita-700 transition-colors"
               >
                 <ArrowLeft className="w-5 h-5" />
               </button>
@@ -113,8 +113,8 @@ export default function DocumentReview() {
                   <FileText className="w-5 h-5 text-red-500" />
                 </div>
                 <div>
-                  <h1 className="text-xl font-semibold text-slate-900">{document.original_filename}</h1>
-                  <div className="flex items-center gap-4 text-sm text-slate-500 mt-0.5">
+                  <h1 className="text-xl font-semibold text-osita-900">{document.original_filename}</h1>
+                  <div className="flex items-center gap-4 text-sm text-osita-500 mt-0.5">
                     {document.page_count && <span>{document.page_count} pages</span>}
                     <span className="flex items-center gap-1">
                       <Languages className="w-3.5 h-3.5" />
@@ -130,7 +130,7 @@ export default function DocumentReview() {
 
             <div className="flex items-center gap-3">
               {unconfirmedCount > 0 && (
-                <span className="text-sm text-slate-500">
+                <span className="text-sm text-osita-500">
                   {unconfirmedCount} unconfirmed
                 </span>
               )}
@@ -153,7 +153,7 @@ export default function DocumentReview() {
         <Card className="flex-1 flex flex-col overflow-hidden" padding="none">
           {/* Page Navigation */}
           {ocrResult && ocrResult.page_count > 1 && (
-            <div className="p-4 border-b border-slate-200 flex items-center justify-center gap-2 bg-slate-50">
+            <div className="p-4 border-b border-osita-200 flex items-center justify-center gap-2 bg-osita-50">
               {Array.from({ length: ocrResult.page_count }, (_, i) => i + 1).map((page) => (
                 <button
                   key={page}
@@ -161,8 +161,8 @@ export default function DocumentReview() {
                   className={cn(
                     'w-8 h-8 rounded-lg text-sm font-medium transition-colors',
                     selectedPage === page
-                      ? 'bg-slate-800 text-white'
-                      : 'bg-white text-slate-600 hover:bg-slate-100 border border-slate-200'
+                      ? 'bg-osita-800 text-white'
+                      : 'bg-white text-osita-600 hover:bg-osita-50 border border-osita-200'
                   )}
                 >
                   {page}
@@ -174,24 +174,24 @@ export default function DocumentReview() {
           {/* OCR Text Display */}
           <div className="flex-1 overflow-auto p-6">
             <div className="mb-4 flex items-center gap-2">
-              <Eye className="w-4 h-4 text-slate-500" />
-              <h3 className="font-medium text-slate-900">OCR Output - Page {selectedPage}</h3>
+              <Eye className="w-4 h-4 text-osita-500" />
+              <h3 className="font-medium text-osita-900">OCR Output - Page {selectedPage}</h3>
             </div>
             
             {currentPage ? (
               <div
                 className={cn(
-                  'bg-slate-50 rounded-xl p-6 text-sm leading-relaxed border border-slate-200',
+                  'bg-osita-50 rounded-xl p-6 text-sm leading-relaxed border border-osita-200',
                   document.detected_language === 'ar' && 'text-right'
                 )}
                 dir={document.detected_language === 'ar' ? 'rtl' : 'ltr'}
               >
-                <pre className="whitespace-pre-wrap font-sans text-slate-700">
+                <pre className="whitespace-pre-wrap font-sans text-osita-700">
                   {currentPage.markdown}
                 </pre>
               </div>
             ) : (
-              <div className="text-center py-12 text-slate-500">
+              <div className="text-center py-12 text-osita-500">
                 <FileText className="w-12 h-12 mx-auto mb-3 opacity-50" />
                 <p>OCR output not available</p>
               </div>
@@ -201,9 +201,9 @@ export default function DocumentReview() {
 
         {/* Extracted Fields */}
         <Card className="w-1/2 flex flex-col overflow-hidden" padding="none">
-          <div className="p-4 border-b border-slate-200 bg-slate-50">
-            <h3 className="font-medium text-slate-900 flex items-center gap-2">
-              <Edit3 className="w-4 h-4 text-slate-500" />
+          <div className="p-4 border-b border-osita-200 bg-osita-50">
+            <h3 className="font-medium text-osita-900 flex items-center gap-2">
+              <Edit3 className="w-4 h-4 text-osita-500" />
               Extracted Fields
             </h3>
           </div>
@@ -211,8 +211,8 @@ export default function DocumentReview() {
           <div className="flex-1 overflow-auto">
             {fields && fields.length > 0 ? (
               <table className="w-full">
-                <thead className="sticky top-0 bg-slate-50">
-                  <tr className="text-left text-xs text-slate-500 uppercase tracking-wide">
+                <thead className="sticky top-0 bg-osita-50">
+                  <tr className="text-left text-xs text-osita-500 uppercase tracking-wide">
                     <th className="px-4 py-3 font-medium">Field</th>
                     <th className="px-4 py-3 font-medium">Value</th>
                     <th className="px-4 py-3 font-medium">Confidence</th>
@@ -237,7 +237,7 @@ export default function DocumentReview() {
                 </tbody>
               </table>
             ) : (
-              <div className="text-center py-12 text-slate-500">
+              <div className="text-center py-12 text-osita-500">
                 <Edit3 className="w-12 h-12 mx-auto mb-3 opacity-50" />
                 <p>No fields extracted</p>
               </div>
@@ -292,21 +292,21 @@ function FieldRow({ field, isEditing, onEdit, onCancelEdit, onSaved }: FieldRowP
   }
 
   const statusConfig: Record<FieldStatus, { color: string; bg: string }> = {
-    unconfirmed: { color: 'text-slate-600', bg: 'bg-slate-100' },
+    unconfirmed: { color: 'text-osita-600', bg: 'bg-osita-50' },
     confirmed: { color: 'text-neutral-700', bg: 'bg-neutral-50' },
     corrected: { color: 'text-amber-700', bg: 'bg-amber-50' },
     manual: { color: 'text-neutral-700', bg: 'bg-neutral-100' },
   }
 
   return (
-    <tr className="border-t border-slate-100 hover:bg-slate-50">
+    <tr className="border-t border-osita-100 hover:bg-osita-50">
       <td className="px-4 py-3">
         <div>
-          <p className="font-medium text-slate-900 capitalize">
+          <p className="font-medium text-osita-900 capitalize">
             {field.field_name.replace(/_/g, ' ')}
           </p>
           {field.source_page && (
-            <p className="text-xs text-slate-500 mt-0.5">Page {field.source_page}</p>
+            <p className="text-xs text-osita-500 mt-0.5">Page {field.source_page}</p>
           )}
         </div>
       </td>
@@ -333,9 +333,9 @@ function FieldRow({ field, isEditing, onEdit, onCancelEdit, onSaved }: FieldRowP
           </div>
         ) : (
           <div className="flex items-center gap-2">
-            <span className="text-slate-900">{field.value || '-'}</span>
+            <span className="text-osita-900">{field.value || '-'}</span>
             {field.unit && (
-              <span className="text-xs text-slate-500 px-1.5 py-0.5 bg-slate-100 rounded">
+              <span className="text-xs text-osita-500 px-1.5 py-0.5 bg-osita-50 rounded">
                 {field.unit}
               </span>
             )}
@@ -343,7 +343,7 @@ function FieldRow({ field, isEditing, onEdit, onCancelEdit, onSaved }: FieldRowP
         )}
         
         {field.source_quote && !isEditing && (
-          <p className="text-xs text-slate-500 mt-1 truncate max-w-[200px]" title={field.source_quote}>
+          <p className="text-xs text-osita-500 mt-1 truncate max-w-[200px]" title={field.source_quote}>
             "{field.source_quote}"
           </p>
         )}
@@ -385,7 +385,7 @@ function FieldRow({ field, isEditing, onEdit, onCancelEdit, onSaved }: FieldRowP
             </button>
             <button
               onClick={onCancelEdit}
-              className="p-1.5 rounded-lg hover:bg-slate-100 text-slate-400"
+              className="p-1.5 rounded-lg hover:bg-osita-50 text-osita-400"
             >
               <X className="w-4 h-4" />
             </button>
@@ -394,7 +394,7 @@ function FieldRow({ field, isEditing, onEdit, onCancelEdit, onSaved }: FieldRowP
           <div className="flex items-center gap-1">
             <button
               onClick={onEdit}
-              className="p-1.5 rounded-lg hover:bg-slate-100 text-slate-400 hover:text-slate-600"
+              className="p-1.5 rounded-lg hover:bg-osita-50 text-osita-400 hover:text-osita-600"
               title="Edit"
             >
               <Edit3 className="w-4 h-4" />
@@ -403,7 +403,7 @@ function FieldRow({ field, isEditing, onEdit, onCancelEdit, onSaved }: FieldRowP
               <button
                 onClick={() => confirmMutation.mutate()}
                 disabled={confirmMutation.isPending}
-                className="p-1.5 rounded-lg hover:bg-neutral-100 text-slate-400 hover:text-neutral-600"
+                className="p-1.5 rounded-lg hover:bg-neutral-100 text-osita-400 hover:text-neutral-600"
                 title="Confirm"
               >
                 {confirmMutation.isPending ? (

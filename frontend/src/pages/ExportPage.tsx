@@ -145,16 +145,16 @@ export default function ExportPage() {
 
   if (projectLoading) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-slate-100">
-        <Loader2 className="w-8 h-8 animate-spin text-slate-400" />
+      <div className="flex items-center justify-center min-h-screen bg-osita-50">
+        <Loader2 className="w-8 h-8 animate-spin text-osita-400" />
       </div>
     )
   }
 
   return (
-    <div className="min-h-full bg-slate-100">
+    <div className="min-h-full bg-osita-50">
       {/* Header */}
-      <header className="bg-white border-b border-slate-200 sticky top-0 z-10">
+      <header className="bg-white border-b border-osita-200 sticky top-0 z-10">
         <div className="max-w-5xl mx-auto px-6 py-4">
           {/* Breadcrumb */}
           <Breadcrumb
@@ -167,13 +167,13 @@ export default function ExportPage() {
           <div className="flex items-center gap-4">
             <Link
               to={`/project/${projectId}`}
-              className="p-2 rounded-xl hover:bg-slate-100 text-slate-500 hover:text-slate-700 transition-colors"
+              className="p-2 rounded-xl hover:bg-osita-50 text-osita-500 hover:text-osita-700 transition-colors"
             >
               <ArrowLeft className="w-5 h-5" />
             </Link>
             <div>
-              <h1 className="text-2xl font-semibold text-slate-900">Export Report</h1>
-              <p className="text-sm text-slate-500 mt-1">
+              <h1 className="text-2xl font-semibold text-osita-900">Export Report</h1>
+              <p className="text-sm text-osita-500 mt-1">
                 Download your CBAM report in various formats
               </p>
             </div>
@@ -209,7 +209,7 @@ export default function ExportPage() {
                   <p className={cn('font-medium', canExport ? 'text-neutral-800' : 'text-amber-800')}>
                     {canExport ? 'Ready for Export' : 'Action Required Before Export'}
                   </p>
-                  <p className="text-sm text-slate-600">
+                  <p className="text-sm text-osita-600">
                     {validationResult.blocking_count} blocking · {validationResult.warning_count} warnings · {validationResult.info_count} info
                   </p>
                 </div>
@@ -245,17 +245,17 @@ export default function ExportPage() {
 
                 {/* Declarant Info Form - Show if that's the blocking issue */}
                 {missingDeclarant && (
-                  <div className="mt-4 p-4 bg-white rounded-xl border border-slate-200">
+                  <div className="mt-4 p-4 bg-white rounded-xl border border-osita-200">
                     <div className="flex items-center gap-2 mb-4">
-                      <User className="w-5 h-5 text-slate-600" />
-                      <h4 className="font-medium text-slate-900">Add Declarant Information</h4>
+                      <User className="w-5 h-5 text-osita-600" />
+                      <h4 className="font-medium text-osita-900">Add Declarant Information</h4>
                     </div>
                     
                     {showSettingsForm ? (
                       <div className="space-y-4">
                         <div className="grid grid-cols-2 gap-4">
                           <div>
-                            <label className="block text-sm font-medium text-slate-700 mb-1">
+                            <label className="block text-sm font-medium text-osita-700 mb-1">
                               Company/Person Name *
                             </label>
                             <input
@@ -267,7 +267,7 @@ export default function ExportPage() {
                             />
                           </div>
                           <div>
-                            <label className="block text-sm font-medium text-slate-700 mb-1">
+                            <label className="block text-sm font-medium text-osita-700 mb-1">
                               EORI / ID Number *
                             </label>
                             <input
@@ -280,7 +280,7 @@ export default function ExportPage() {
                           </div>
                         </div>
                         <div>
-                          <label className="block text-sm font-medium text-slate-700 mb-1">
+                          <label className="block text-sm font-medium text-osita-700 mb-1">
                             Country Code (optional)
                           </label>
                           <input
@@ -382,7 +382,7 @@ export default function ExportPage() {
                 className={cn(
                   'transition-all h-full',
                   canExport ? 'cursor-pointer' : 'opacity-50 cursor-not-allowed',
-                  activeTab === id && canExport && 'ring-2 ring-slate-400 border-slate-400'
+                  activeTab === id && canExport && 'ring-2 ring-osita-400 border-osita-400'
                 )}
                 padding="md"
                 onClick={() => {
@@ -397,23 +397,23 @@ export default function ExportPage() {
                 <div className="flex items-start gap-4">
                   <div className={cn(
                     'w-12 h-12 rounded-xl flex items-center justify-center',
-                    activeTab === id && canExport ? 'bg-slate-800' : 'bg-slate-100'
+                    activeTab === id && canExport ? 'bg-osita-800' : 'bg-osita-50'
                   )}>
                     {isLoading ? (
                       <Loader2 className={cn(
                         'w-6 h-6 animate-spin',
-                        activeTab === id && canExport ? 'text-white' : 'text-slate-500'
+                        activeTab === id && canExport ? 'text-white' : 'text-osita-500'
                       )} />
                     ) : (
                       <Icon className={cn(
                         'w-6 h-6',
-                        activeTab === id && canExport ? 'text-white' : 'text-slate-500'
+                        activeTab === id && canExport ? 'text-white' : 'text-osita-500'
                       )} />
                     )}
                   </div>
                   <div>
-                    <h3 className="font-medium text-slate-900">{title}</h3>
-                    <p className="text-sm text-slate-500 mt-1">{description}</p>
+                    <h3 className="font-medium text-osita-900">{title}</h3>
+                    <p className="text-sm text-osita-500 mt-1">{description}</p>
                   </div>
                 </div>
               </Card>
@@ -428,9 +428,9 @@ export default function ExportPage() {
             animate={{ opacity: 1, y: 0 }}
           >
             <Card padding="none" className="overflow-hidden">
-              <div className="flex items-center justify-between px-4 py-3 border-b border-slate-200 bg-slate-50">
-                <h3 className="font-medium text-slate-900 flex items-center gap-2">
-                  <FileCode className="w-4 h-4 text-slate-500" />
+              <div className="flex items-center justify-between px-4 py-3 border-b border-osita-200 bg-osita-50">
+                <h3 className="font-medium text-osita-900 flex items-center gap-2">
+                  <FileCode className="w-4 h-4 text-osita-500" />
                   XML Preview
                 </h3>
                 <Button variant="secondary" size="sm" onClick={copyXml}>
@@ -447,8 +447,8 @@ export default function ExportPage() {
                   )}
                 </Button>
               </div>
-              <div className="p-4 max-h-[500px] overflow-auto bg-slate-900">
-                <pre className="xml-display text-slate-300">{xmlContent}</pre>
+              <div className="p-4 max-h-[500px] overflow-auto bg-osita-900">
+                <pre className="xml-display text-osita-300">{xmlContent}</pre>
               </div>
             </Card>
           </motion.div>
@@ -457,8 +457,8 @@ export default function ExportPage() {
         {/* Export History */}
         {exportHistory && exportHistory.length > 0 && (
           <div className="mt-12">
-            <h3 className="text-lg font-medium text-slate-900 mb-4 flex items-center gap-2">
-              <Clock className="w-5 h-5 text-slate-400" />
+            <h3 className="text-lg font-medium text-osita-900 mb-4 flex items-center gap-2">
+              <Clock className="w-5 h-5 text-osita-400" />
               Export History
             </h3>
             <div className="space-y-2">
@@ -470,8 +470,8 @@ export default function ExportPage() {
                       {record.format === 'xml' && <FileCode className="w-5 h-5 text-neutral-500" />}
                       {record.format === 'zip' && <Package className="w-5 h-5 text-purple-500" />}
                       <div>
-                        <p className="font-medium text-slate-900">{record.filename}</p>
-                        <p className="text-xs text-slate-500">
+                        <p className="font-medium text-osita-900">{record.filename}</p>
+                        <p className="text-xs text-osita-500">
                           {new Date(record.generated_at).toLocaleString()}
                         </p>
                       </div>
@@ -493,26 +493,26 @@ export default function ExportPage() {
             <CardContent>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
                 <div>
-                  <p className="text-xs text-slate-500 uppercase tracking-wide">Reporting Period</p>
-                  <p className="text-xl font-semibold text-slate-900 mt-1">
+                  <p className="text-xs text-osita-500 uppercase tracking-wide">Reporting Period</p>
+                  <p className="text-xl font-semibold text-osita-900 mt-1">
                     {project.canonical_data.reporting_period || '-'} {project.canonical_data.reporting_year || ''}
                   </p>
                 </div>
                 <div>
-                  <p className="text-xs text-slate-500 uppercase tracking-wide">Total Electricity</p>
-                  <p className="text-xl font-semibold text-slate-900 mt-1">
-                    {project.canonical_data.total_electricity_mwh?.toFixed(3) || '0'} <span className="text-sm text-slate-400">MWh</span>
+                  <p className="text-xs text-osita-500 uppercase tracking-wide">Total Electricity</p>
+                  <p className="text-xl font-semibold text-osita-900 mt-1">
+                    {project.canonical_data.total_electricity_mwh?.toFixed(3) || '0'} <span className="text-sm text-osita-400">MWh</span>
                   </p>
                 </div>
                 <div>
-                  <p className="text-xs text-slate-500 uppercase tracking-wide">Indirect Emissions</p>
+                  <p className="text-xs text-osita-500 uppercase tracking-wide">Indirect Emissions</p>
                   <p className="text-xl font-semibold text-neutral-600 mt-1">
                     {project.canonical_data.total_indirect_emissions_tco2?.toFixed(3) || '0'} <span className="text-sm">tCO₂</span>
                   </p>
                 </div>
                 <div>
-                  <p className="text-xs text-slate-500 uppercase tracking-wide">Documents</p>
-                  <p className="text-xl font-semibold text-slate-900 mt-1">
+                  <p className="text-xs text-osita-500 uppercase tracking-wide">Documents</p>
+                  <p className="text-xl font-semibold text-osita-900 mt-1">
                     {project.documents?.length || 0}
                   </p>
                 </div>
