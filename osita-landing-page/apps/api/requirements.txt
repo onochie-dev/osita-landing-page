@@ -1,0 +1,32 @@
+# Osita Backend Dependencies
+fastapi
+uvicorn[standard]
+python-multipart
+sqlalchemy
+pydantic
+pydantic-settings
+python-dotenv
+httpx
+aiofiles
+
+# PDF Processing
+PyPDF2
+
+# Excel Export
+openpyxl
+xlsxwriter
+
+# XML Processing
+lxml
+
+# OpenAI SDK
+openai
+
+# Mistral AI SDK
+mistralai
+
+# Date/Time utilities
+python-dateutil
+
+# Async support
+anyio
